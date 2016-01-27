@@ -183,13 +183,57 @@ public class EventBus { //Bus d'esdeveniments del joc
 				EntityExplodeEvent evt = (EntityExplodeEvent)event;
 				onEntityExplode(evt, entity);
 			}
-			if (event instanceof EntityDeathEvent){
+			if (event instanceof EntityDeathEvent){ //--
 				EntityDeathEvent evt = (EntityDeathEvent)event;
 				onEntityDeath(evt, entity);
 			}
-			if (event instanceof ItemDespawnEvent){
-				ItemDespawnEvent evt = (ItemDespawnEvent)event;
-				onItemDespawn(evt, evt.getEntity());
+			if (event instanceof EntityBreakDoorEvent){
+				EntityBreakDoorEvent evt = (EntityBreakDoorEvent)event;
+				onEntityBreakDoor(evt, entity);
+			}
+			if (event instanceof EntityShootBowEvent){
+				EntityShootBowEvent evt = (EntityShootBowEvent)event;
+				onEntityShootBow(evt, entity, evt.getBow(), (Projectile) evt.getProjectile(), evt.getForce());
+			}
+			if (event instanceof EntityUnleashEvent){
+				EntityUnleashEvent evt = (EntityUnleashEvent)event;
+				onEntityUnleash(evt, entity, evt.getReason());
+			}
+			if (event instanceof EntityBlockFormEvent){
+				EntityBlockFormEvent evt = (EntityBlockFormEvent)event;
+				onEntityBlockForm(evt, entity);
+			}
+			if (event instanceof EntityChangeBlockEvent){
+				EntityChangeBlockEvent evt = (EntityChangeBlockEvent)event;
+				onEntityChangeBlock(evt, entity);
+			}
+			if (event instanceof EntityInteractEvent){
+				EntityInteractEvent evt = (EntityInteractEvent)event;
+				onEntityInteract(evt, entity);
+			}
+			if (event instanceof EntityRegainHealthEvent){
+				EntityRegainHealthEvent evt = (EntityRegainHealthEvent)event;
+				onEntityRegainHealth(evt, entity);
+			}
+			if (event instanceof EntityTargetEvent){
+				EntityTargetEvent evt = (EntityTargetEvent)event;
+				onEntityTarget(evt, entity);
+			}
+			if (event instanceof EntityTargetLivingEntityEvent){
+				EntityTargetLivingEntityEvent evt = (EntityTargetLivingEntityEvent)event;
+				onEntityTargetLivingEntity(evt, evt.getEntity());
+			}
+			if (event instanceof EntityPortalEnterEvent){
+				EntityPortalEnterEvent evt = (EntityPortalEnterEvent)event;
+				onEntityPortalEnter(evt, evt.getEntity());
+			}
+			if (event instanceof EntityPortalExitEvent){
+				EntityPortalExitEvent evt = (EntityPortalExitEvent)event;
+				onEntityPortalExit(evt, evt.getEntity());
+			}
+			if (event instanceof EntityCreatePortalEvent){
+				EntityCreatePortalEvent evt = (EntityCreatePortalEvent)event;
+				onEntityCreatePortal(evt, evt.getEntity());
 			}
 		}
 		//PLAYER
@@ -358,6 +402,30 @@ public class EventBus { //Bus d'esdeveniments del joc
 	protected void onEntityExplode(EntityExplodeEvent evt, Entity e) {
 	}
 	protected void onEntityDeath(EntityDeathEvent evt, Entity e) {
+	}
+	protected void onEntityBreakDoor(EntityBreakDoorEvent evt, Entity e) { //NEW +
+	}
+	protected void onEntityShootBow(EntityShootBowEvent evt, Entity e, ItemStack bow, Projectile proj, float power) { //NEW +
+	}
+	protected void onEntityUnleash(EntityUnleashEvent evt, Entity e, EntityUnleashEvent.UnleashReason reason) { //NEW +
+	}
+	protected void onEntityBlockForm(EntityBlockFormEvent evt, Entity e) { //NEW +
+	}
+	protected void onEntityChangeBlock(EntityChangeBlockEvent evt, Entity e) { //NEW +
+	}
+	protected void onEntityInteract(EntityInteractEvent evt, Entity e) { //NEW +
+	}
+	protected void onEntityRegainHealth(EntityRegainHealthEvent evt, Entity e) { //NEW +
+	}
+	protected void onEntityTarget(EntityTargetEvent evt, Entity e) { //NEW +
+	}
+	protected void onEntityTargetLivingEntity(EntityTargetLivingEntityEvent evt, Entity e) { //NEW +
+	}
+	protected void onEntityPortalEnter(EntityPortalEnterEvent evt, Entity e) { //NEW +
+	}
+	protected void onEntityPortalExit(EntityPortalExitEvent evt, Entity e) { //NEW +
+	}
+	protected void onEntityCreatePortal(EntityCreatePortalEvent evt, Entity e) { //NEW
 	}
 	protected void onExplosionPrime(ExplosionPrimeEvent evt) {
 	}

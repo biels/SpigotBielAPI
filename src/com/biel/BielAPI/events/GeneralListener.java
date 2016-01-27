@@ -94,8 +94,8 @@ public class GeneralListener implements Listener {
 	//		public void onBlockRedstone(BlockRedstoneEvent evt) {h(evt);}
 	//		@EventHandler
 	//		public void onBlockSpread(BlockSpreadEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityBlockForm(EntityBlockFormEvent evt) {h(evt);}
+			@EventHandler
+			public void onEntityBlockForm(EntityBlockFormEvent evt) {h(evt);}
 	//		@EventHandler
 	//		public void onLeavesDecay(LeavesDecayEvent evt) {h(evt);}
 	//		@EventHandler
@@ -110,62 +110,62 @@ public class GeneralListener implements Listener {
 	public void onCreatureSpawn(CreatureSpawnEvent evt) {h(evt);}
 	@EventHandler
 	public void onEntityBreakDoor(EntityBreakDoorEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityChangeBlock(EntityChangeBlockEvent evt) {h(evt);}
+			@EventHandler
+			public void onEntityChangeBlock(EntityChangeBlockEvent evt) {h(evt);} //New
 	@EventHandler
 	public void onEntityCombustByBlock(EntityCombustByBlockEvent evt) {h(evt);}
 	@EventHandler
 	public void onEntityCombustByEntity(EntityCombustByEntityEvent evt) {h(evt);}
 	@EventHandler
 	public void onEntityCombust(EntityCombustEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityCreatePortal(EntityCreatePortalEvent evt) {h(evt);}
+			@EventHandler
+			public void onEntityCreatePortal(EntityCreatePortalEvent evt) {h(evt);}
 	@EventHandler
 	public void onEntityDamageByBlock(EntityDamageByBlockEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityDamageByEntity(EntityDamageByEntityEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityDamage(EntityDamageEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityDeath(EntityDeathEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityExplode(EntityExplodeEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityInteract(EntityInteractEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityPortalEnterEvent(EntityPortalEnterEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityRegainHealth(EntityRegainHealthEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityShootBow(EntityShootBowEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityTame(EntityTameEvent evt) {h(evt);}
-	////		@EventHandler
-	////		public void onEntityTarget(EntityTargetEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityTargetLivingEntity(EntityTargetLivingEntityEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onEntityTeleport(EntityTeleportEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onExpBottle(ExpBottleEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onExplosionPrime(ExplosionPrimeEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onFoodLevelChange(FoodLevelChangeEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onItemDespawn(ItemDespawnEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onPigZap(PigZapEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onPlayerDeath(PlayerDeathEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onPotionSplash(PotionSplashEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onSheepDyeWool(SheepDyeWoolEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onSheepRegrowWool(SheepRegrowWoolEvent evt) {h(evt);}
-	//		@EventHandler
-	//		public void onSlimeSplit(SlimeSplitEvent evt) {h(evt);}
+//new-----------
+			@EventHandler
+			public void onEntityInteract(EntityInteractEvent evt) {h(evt);}
+			@EventHandler
+			public void onEntityPortalEnterEvent(EntityPortalEnterEvent evt) {h(evt);}
+			@EventHandler
+			public void onEntityPortalExitEvent(EntityPortalExitEvent evt) {h(evt);}
+			@EventHandler
+			public void onEntityRegainHealth(EntityRegainHealthEvent evt) {h(evt);}
+			@EventHandler
+			public void onEntityShootBow(EntityShootBowEvent evt) {h(evt);}
+			@EventHandler
+			public void onEntityTame(EntityTameEvent evt) {h(evt);}
+			@EventHandler
+			public void onEntityTarget(EntityTargetEvent evt) {h(evt);}
+			@EventHandler
+			public void onEntityTargetLivingEntity(EntityTargetLivingEntityEvent evt) {h(evt);}
+			@EventHandler
+			public void onEntityTeleport(EntityTeleportEvent evt) {h(evt);}
+			@EventHandler
+			public void onExpBottle(ExpBottleEvent evt) {h(evt);}
+			@EventHandler
+			public void onFoodLevelChange(FoodLevelChangeEvent evt) {h(evt);}
+			@EventHandler
+			public void onItemDespawn(ItemDespawnEvent evt) {h(evt);}
+			@EventHandler
+			public void onPigZap(PigZapEvent evt) {h(evt);}
+			@EventHandler
+			public void onPlayerDeath(PlayerDeathEvent evt) {h(evt);}
+			@EventHandler
+			public void onPotionSplash(PotionSplashEvent evt) {h(evt);}
+			@EventHandler
+			public void onSheepDyeWool(SheepDyeWoolEvent evt) {h(evt);}
+			@EventHandler
+			public void onSheepRegrowWool(SheepRegrowWoolEvent evt) {h(evt);}
+			@EventHandler
+			public void onSlimeSplit(SlimeSplitEvent evt) {h(evt);}
+			//created
+			
+			@EventHandler
+			public void onEntityBreakDoorEvent(EntityBreakDoorEvent evt) {h(evt);}
+			@EventHandler
+			public void onEntityUnleashEvent(EntityUnleashEvent evt) {h(evt);}
+			//
 	//		@EventHandler
 	////		public void onBrew(BrewEvent evt) {h(evt);}
 	////		@EventHandler
@@ -201,8 +201,8 @@ public class GeneralListener implements Listener {
 	//		public void onPlayerChatTabComplete(PlayerChatTabCompleteEvent evt) {h(evt);}
 	//		@EventHandler
 	////		public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent evt) {h(evt);}
-	////		@EventHandler
-	//		public void onPlayerDropItem(PlayerDropItemEvent evt) {h(evt);}
+			@EventHandler
+			public void onPlayerDropItem(PlayerDropItemEvent evt) {h(evt);}
 	//		@EventHandler
 	////		public void onPlayerEggThrow(PlayerEggThrowEvent evt) {h(evt);}
 	////		@EventHandler
