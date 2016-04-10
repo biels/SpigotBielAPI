@@ -194,6 +194,9 @@ public class EventBus { //Bus d'esdeveniments del joc
 			if (event instanceof EntityShootBowEvent){
 				EntityShootBowEvent evt = (EntityShootBowEvent)event;
 				onEntityShootBow(evt, entity, evt.getBow(), (Projectile) evt.getProjectile(), evt.getForce());
+				if(entity instanceof Player){
+					onPlayerShootBow(evt, (Player) entity, evt.getBow(), (Projectile) evt.getProjectile(), evt.getForce());
+				}
 			}
 			if (event instanceof EntityUnleashEvent){
 				EntityUnleashEvent evt = (EntityUnleashEvent)event;
@@ -214,6 +217,9 @@ public class EventBus { //Bus d'esdeveniments del joc
 			if (event instanceof EntityRegainHealthEvent){
 				EntityRegainHealthEvent evt = (EntityRegainHealthEvent)event;
 				onEntityRegainHealth(evt, entity);
+				if(entity instanceof Player){
+					onPlayerRegainHealth(evt, (Player) entity);
+				}
 			}
 			if (event instanceof EntityTargetEvent){
 				EntityTargetEvent evt = (EntityTargetEvent)event;
@@ -407,6 +413,8 @@ public class EventBus { //Bus d'esdeveniments del joc
 	}
 	protected void onEntityShootBow(EntityShootBowEvent evt, Entity e, ItemStack bow, Projectile proj, float power) { //NEW +
 	}
+	protected void onPlayerShootBow(EntityShootBowEvent evt, Player p, ItemStack bow, Projectile proj, float power) { //NEW + Derived
+	}
 	protected void onEntityUnleash(EntityUnleashEvent evt, Entity e, EntityUnleashEvent.UnleashReason reason) { //NEW +
 	}
 	protected void onEntityBlockForm(EntityBlockFormEvent evt, Entity e) { //NEW +
@@ -416,6 +424,8 @@ public class EventBus { //Bus d'esdeveniments del joc
 	protected void onEntityInteract(EntityInteractEvent evt, Entity e) { //NEW +
 	}
 	protected void onEntityRegainHealth(EntityRegainHealthEvent evt, Entity e) { //NEW +
+	}
+	protected void onPlayerRegainHealth(EntityRegainHealthEvent evt, Player p) { //NEW + Derived
 	}
 	protected void onEntityTarget(EntityTargetEvent evt, Entity e) { //NEW +
 	}
