@@ -28,6 +28,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import com.biel.BielAPI.Com;
+import com.biel.BielAPI.Utils.Regions.Cuboid;
 
 
 
@@ -176,11 +177,11 @@ public class RecallUtils {
 		if (isInRecall(p)){return;}
 		//PRE-CHECK
 		if(!checkRecallArea(p.getLocation())){
-			p.sendMessage("Posició no vàlida per fer recall. Torna-ho a intentar en un lloc plà.");
+			p.sendMessage("Posiciï¿½ no vï¿½lida per fer recall. Torna-ho a intentar en un lloc plï¿½.");
 			return;
 		}
 		if (!checkDestArea(l)){
-			p.sendMessage("El punt de destí no és vàlid o está obstruït.");
+			p.sendMessage("El punt de destï¿½ no ï¿½s vï¿½lid o estï¿½ obstruï¿½t.");
 			return;
 		}
 		//START
@@ -222,14 +223,14 @@ public class RecallUtils {
 					pitch = (float) (pitch - (0.8F * (recallProgress - 0.8) * (recallProgress - 0.8)));
 					pitch = (float) (max * dp - (decay * (recallProgress - dp)));
 				}
-				ply.getWorld().playSound(ply.getLocation(), Sound.NOTE_BASS, 3F, pitch);
+				ply.getWorld().playSound(ply.getLocation(), Sound.BLOCK_NOTE_BASS, 3F, pitch);
 				//------------------
 				boolean moved = !plyloc.equalsIgnoreCase(GUtils.writeHumanReadableLocation(ply.getLocation(), false));
 				boolean damaged = ply.getHealth() != ply.getMaxHealth();
 				
 				
 //				if (damaged){
-//					ply.sendMessage("Has de tenir la vida al màxim per poder fer recall!");
+//					ply.sendMessage("Has de tenir la vida al mï¿½xim per poder fer recall!");
 //					cancelled = true;
 //				}
 				if (moved){

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
+import com.biel.BielAPI.Utils.Regions.Cuboid;
+
 public class GestorPropietats {
 	String Ruta = "";
 	public  GestorPropietats(String RutaArxiuPropietats){
@@ -56,7 +58,7 @@ public class GestorPropietats {
 				return part2;
 			}
 		}
-		EstablirPropietat(Nom,"0");
+		EstablirPropietat(Nom, "0");
 		return "0";
 	}
 	public int ObtenirPropietatInt(String Nom){
@@ -153,7 +155,6 @@ public class GestorPropietats {
 			
 			Locs.add(p);
 			i = i + 1;
-			
 		}
 		return Locs;
 	}
