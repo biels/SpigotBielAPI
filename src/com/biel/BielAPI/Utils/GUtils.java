@@ -136,11 +136,7 @@ public class GUtils {
 	}
 	public static boolean isArmor(ItemStack itemstack){
 		int slot = getArmorSlot(itemstack);
-		if(slot == -1){
-			return false;
-		}else{
-			return true;
-		}
+        return slot != -1;
 	}
 	public static void giveItemStack(ItemStack itemstack, Player d) {
 		boolean isArmor = isArmor(itemstack);
@@ -216,11 +212,8 @@ public class GUtils {
 	}
 	public static boolean Possibilitat(double percentatge, double max){
 		double n = NombreEntre(0, max);
-		if (n <= percentatge){
-			return true;
-		}
-		return false;
-	}
+        return n <= percentatge;
+    }
 	public static boolean Possibilitat(int percentatge, int max){
 		return Possibilitat((double)percentatge, max);
 	}
@@ -689,7 +682,7 @@ public class GUtils {
 			{
 				loc.setYaw((float)(0.5 * Math.PI));
 			}
-			loc.setYaw((float)loc.getYaw() - (float)Math.atan(dz / dx));
+			loc.setYaw(loc.getYaw() - (float)Math.atan(dz / dx));
 		}
 		else if(dz < 0)
 		{
@@ -788,11 +781,8 @@ public class GUtils {
 		return averageVector(geometricMedianReduce(points, depth));
 	}
 	public static boolean isValidSolidBlock(Block blk) {
-		if(blk.isLiquid() || !blk.getType().isBlock() || blk.isEmpty() || !blk.getType().isSolid()){
-			return false;
-		}
-		return true;
-	}
+        return !(blk.isLiquid() || !blk.getType().isBlock() || blk.isEmpty() || !blk.getType().isSolid());
+    }
 	public static void swapPositions(Entity e1, Entity e2){
 		Location l1 = e1.getLocation();
 		Location l2 = e2.getLocation();
@@ -803,7 +793,7 @@ public class GUtils {
 		for(ItemStack s : toSubtract){
 			int remAmount = s.getAmount();
 			for (Iterator<ItemStack> iterator = contents.iterator(); iterator.hasNext();) {
-				ItemStack i = (ItemStack) iterator.next();
+				ItemStack i = iterator.next();
 				if(i.getType() != s.getType() || i.getData().getData() != s.getData().getData())continue;
 				if(i.getAmount() - remAmount > 0){
 					i.setAmount(i.getAmount() - remAmount);

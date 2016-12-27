@@ -5,5 +5,5 @@ public interface iNmsObject {
 	/**
 	 * Build
 	 */
-	public Object build()throws Exception;
+    Object build()throws Exception;
 }

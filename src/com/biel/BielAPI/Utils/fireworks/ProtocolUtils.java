@@ -17,7 +17,7 @@ public class ProtocolUtils {
 	static{
 		try{
 			ProtocolUtils.refl_item_asNMSCopy=ProtocolUtils.getCraftbukkitClass("inventory.CraftItemStack")
-					.getDeclaredMethod("asNMSCopy", new Class[]{ItemStack.class});
+					.getDeclaredMethod("asNMSCopy", ItemStack.class);
 			ProtocolUtils.refl_item_asNMSCopy.setAccessible(true);
 			
 			Class<?> class_EntityPlayer=ProtocolUtils.getMinecraftClass("EntityPlayer");
@@ -26,7 +26,7 @@ public class ProtocolUtils {
 			
 			ProtocolUtils.refl_player_getHandle=class_CraftPlayer.getDeclaredMethod("getHandle");
 			ProtocolUtils.refl_player_playerConnection=class_EntityPlayer.getDeclaredField("playerConnection");
-			ProtocolUtils.refl_player_sendPacket=class_PlayerConnection.getDeclaredMethod("sendPacket", new Class[]{ProtocolUtils.getMinecraftClass("Packet")});
+			ProtocolUtils.refl_player_sendPacket=class_PlayerConnection.getDeclaredMethod("sendPacket", ProtocolUtils.getMinecraftClass("Packet"));
 		}catch(Exception e){
 			e.printStackTrace();
 		}

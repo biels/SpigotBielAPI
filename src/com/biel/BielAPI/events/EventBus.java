@@ -55,9 +55,8 @@ public class EventBus { //Bus d'esdeveniments del joc
 		return destroyed;
 	}
 	public boolean isValid(){
-		if(isDestroyed())return false;
-		return true;
-	}
+        return !isDestroyed();
+    }
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

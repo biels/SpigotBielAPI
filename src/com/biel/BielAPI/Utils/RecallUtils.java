@@ -160,19 +160,15 @@ public class RecallUtils {
 		//if (b.getType() != Material.EMERALD_BLOCK){return false;}
 		Block relative = b.getRelative(BlockFace.UP);
 		if (isValidSolidBlock(relative)){return false;}
-		if (isValidSolidBlock(relative.getRelative(BlockFace.UP))){return false;}
-		return true;
-	}
+        return !isValidSolidBlock(relative.getRelative(BlockFace.UP));
+    }
 	/**
 	 * @param blk
 	 * @return
 	 */
 	private static boolean isValidSolidBlock(Block blk) {
-		if(blk.isLiquid() || !blk.getType().isBlock() || blk.isEmpty() || !blk.getType().isSolid()){
-			return false;
-		}
-		return true;
-	}
+        return !(blk.isLiquid() || !blk.getType().isBlock() || blk.isEmpty() || !blk.getType().isSolid());
+    }
 	public static void startRecallTeleport(Player p, final Location l){
 		if (isInRecall(p)){return;}
 		//PRE-CHECK

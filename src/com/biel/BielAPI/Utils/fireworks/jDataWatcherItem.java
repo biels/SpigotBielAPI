@@ -17,10 +17,10 @@ public class jDataWatcherItem<T> implements iNmsObject{
 		try{
 			jDataWatcherItem.clazz=ProtocolUtils.getMinecraftClass("DataWatcher$Item");
 			
-			jDataWatcherItem.constructor=jDataWatcherItem.clazz.getDeclaredConstructor(new Class[]{ProtocolUtils.getMinecraftClass("DataWatcherObject"), Object.class});
+			jDataWatcherItem.constructor=jDataWatcherItem.clazz.getDeclaredConstructor(ProtocolUtils.getMinecraftClass("DataWatcherObject"), Object.class);
 			jDataWatcherItem.constructor.setAccessible(true);
 			
-			jDataWatcherItem.method_flag_set=jDataWatcherItem.clazz.getDeclaredMethod("a", new Class[]{boolean.class});
+			jDataWatcherItem.method_flag_set=jDataWatcherItem.clazz.getDeclaredMethod("a", boolean.class);
 			jDataWatcherItem.method_flag_set.setAccessible(true);
 		}catch(Exception e){
 			e.printStackTrace();

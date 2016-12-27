@@ -113,7 +113,7 @@ public class IconMenu extends EventBus{
 
 
 	public interface OptionClickEventHandler {
-		public void onOptionClick(OptionClickEvent event);
+		void onOptionClick(OptionClickEvent event);
 	}
 
 	public class OptionClickEvent {
