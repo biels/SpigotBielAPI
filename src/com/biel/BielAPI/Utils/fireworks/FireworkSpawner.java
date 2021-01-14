@@ -27,7 +27,7 @@ public class FireworkSpawner {
 		//From here we put things inside a try-catch to make sure the player always receives a destroy packet (otherwise their client will crash)
 		try{
 			//Send firework meta
-			ItemStack item=new ItemStack(Material.FIREWORK);
+			ItemStack item=new ItemStack(Material.LEGACY_FIREWORK);
 			FireworkMeta meta=(FireworkMeta)item.getItemMeta();
 			meta.addEffect(effect);
 			item.setItemMeta(meta);

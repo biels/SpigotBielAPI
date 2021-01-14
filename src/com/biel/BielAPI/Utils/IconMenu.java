@@ -73,7 +73,8 @@ public class IconMenu extends EventBus{
 		optionIcons = null;
 	}
 	public boolean isThisOne(Inventory inventory, InventoryHolder h) {
-		return inventory.getTitle().equals(name) && inventory.getHolder() == h;
+		return true;
+//		return inventory.getTitle().equals(name) && inventory.getHolder() == h;
 	}
 	@Override
 	protected void onInventoryClose(InventoryCloseEvent evt, Inventory inv) {

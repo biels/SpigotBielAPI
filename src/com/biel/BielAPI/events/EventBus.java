@@ -86,13 +86,13 @@ public class EventBus { //Bus d'esdeveniments del joc
 			}
 			if (event instanceof FurnaceBurnEvent){
 				FurnaceBurnEvent evt = (FurnaceBurnEvent)event;
-				if(blk.getType() == Material.FURNACE || blk.getType() == Material.BURNING_FURNACE){
+				if(blk.getType() == Material.FURNACE || blk.getType() == Material.LEGACY_BURNING_FURNACE){
 					onFurnaceBurn(evt, blk, (Furnace) blk.getState());				       						
 				}
 			}
 			if (event instanceof FurnaceSmeltEvent){
 				FurnaceSmeltEvent evt = (FurnaceSmeltEvent)event;
-				if(blk.getType() == Material.FURNACE || blk.getType() == Material.BURNING_FURNACE){
+				if(blk.getType() == Material.FURNACE || blk.getType() == Material.LEGACY_BURNING_FURNACE){
 					onFurnaceSmelt(evt, blk, (Furnace) blk.getState());				       						
 				}
 			}

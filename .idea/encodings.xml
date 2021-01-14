@@ -2,5 +2,9 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/com/biel/BielAPI/Utils/ScoreBoardUpdater.java" charset="UTF-8" />
+    <file url="PROJECT" charset="windows-1252" />
   </component>
 </project>
