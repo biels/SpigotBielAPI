@@ -1,7 +1,6 @@
 package com.biel.BielAPI.events;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -36,20 +35,25 @@ import com.biel.BielAPI.Com;
 import com.biel.BielAPI.Utils.GUtils;
 
 public class EventBus { //Bus d'esdeveniments del joc
-	ArrayList<Event> recieved = new ArrayList<Event>();
+	private Event lastReceivedEvent;
 	private boolean destroyed = false;
+	private boolean registered = false;
 	public EventBus() {
-		Com.getPlugin().evtgest.registerEventBus(this);
+		if (shouldRegisterImmediately()) {
+			registerEventBus();
+		}
 		//Com.getPlugin().evtgest.unregisterInvalidBuses();
+	}
+	protected boolean shouldRegisterImmediately() {
+		return true;
+	}
+	protected final void registerEventBus() {
+		if (registered || destroyed) return;
+		Com.getPlugin().evtgest.registerEventBus(this);
+		registered = true;
 	}
 	public void destroyEventBus(){
 		destroyed = true;
-	}
-	@Override
-	protected void finalize() throws Throwable {
-		// TODO Auto-generated method stub
-		destroyEventBus();
-		super.finalize();
 	}
 	public boolean isDestroyed() {
 		return destroyed;
@@ -64,12 +68,9 @@ public class EventBus { //Bus d'esdeveniments del joc
 	}
 	public synchronized void recieveEvent(Event evt) {
 		if(!isValid())return;
-		if(recieved.contains(evt))return;
+		if(lastReceivedEvent == evt)return;
+		lastReceivedEvent = evt;
 		if (verifyEvent(evt)){gameEvent(evt);}
-		if(GUtils.Possibilitat(4)){
-			//recieved.clear();
-		}
-		recieved.add(evt);
 	}
 	protected synchronized void gameEvent(Event event){
 		//BLOCK
@@ -86,13 +87,13 @@ public class EventBus { //Bus d'esdeveniments del joc
 			}
 			if (event instanceof FurnaceBurnEvent){
 				FurnaceBurnEvent evt = (FurnaceBurnEvent)event;
-				if(blk.getType() == Material.FURNACE || blk.getType() == Material.LEGACY_BURNING_FURNACE){
+				if(blk.getType() == Material.FURNACE){
 					onFurnaceBurn(evt, blk, (Furnace) blk.getState());				       						
 				}
 			}
 			if (event instanceof FurnaceSmeltEvent){
 				FurnaceSmeltEvent evt = (FurnaceSmeltEvent)event;
-				if(blk.getType() == Material.FURNACE || blk.getType() == Material.LEGACY_BURNING_FURNACE){
+				if(blk.getType() == Material.FURNACE){
 					onFurnaceSmelt(evt, blk, (Furnace) blk.getState());				       						
 				}
 			}
@@ -235,10 +236,6 @@ public class EventBus { //Bus d'esdeveniments del joc
 			if (event instanceof EntityPortalExitEvent){
 				EntityPortalExitEvent evt = (EntityPortalExitEvent)event;
 				onEntityPortalExit(evt, evt.getEntity());
-			}
-			if (event instanceof EntityCreatePortalEvent){
-				EntityCreatePortalEvent evt = (EntityCreatePortalEvent)event;
-				onEntityCreatePortal(evt, evt.getEntity());
 			}
 		}
 		//PLAYER
@@ -434,8 +431,6 @@ public class EventBus { //Bus d'esdeveniments del joc
 	}
 	protected void onEntityPortalExit(EntityPortalExitEvent evt, Entity e) { //NEW +
 	}
-	protected void onEntityCreatePortal(EntityCreatePortalEvent evt, Entity e) { //NEW
-	}
 	protected void onExplosionPrime(ExplosionPrimeEvent evt) {
 	}
 	protected void onPlayerInteract(PlayerInteractEvent evt, Player p) {
@@ -466,7 +461,10 @@ public class EventBus { //Bus d'esdeveniments del joc
 		Bukkit.getScheduler().runTaskLater(Com.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
-				if(player.isValid()){
+				// A player can leave this bus's world (and the temporary world can be
+				// unloaded) during the one-tick respawn delay. Revalidate both the bus
+				// and the event immediately before invoking game-specific callbacks.
+				if(player.isOnline() && isValid() && verifyEvent(fEvt)){
 					onPlayerRespawnAfterTick(fEvt, player);
 				}
 			}

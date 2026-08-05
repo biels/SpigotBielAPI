@@ -118,8 +118,6 @@ public class GeneralListener implements Listener {
 	public void onEntityCombustByEntity(EntityCombustByEntityEvent evt) {h(evt);}
 	@EventHandler
 	public void onEntityCombust(EntityCombustEvent evt) {h(evt);}
-			@EventHandler
-			public void onEntityCreatePortal(EntityCreatePortalEvent evt) {h(evt);}
 	@EventHandler
 	public void onEntityDamageByBlock(EntityDamageByBlockEvent evt) {h(evt);}
 //new-----------
@@ -223,8 +221,6 @@ public class GeneralListener implements Listener {
 	//		public void onPlayerKick(PlayerKickEvent evt) {h(evt);}
 	//		@EventHandler
 	//		public void onPlayerLevelChange(PlayerLevelChangeEvent evt) {h(evt);}
-	@EventHandler
-	public void onPlayerLogin(PlayerLoginEvent evt) {h(evt);}
 
 	//	@EventHandler
 	//	public void onPlayerPortal(PlayerPortalEvent evt) {h(evt);}

@@ -17,22 +17,27 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.world.WorldEvent;
 import org.bukkit.inventory.InventoryHolder;
 
+import com.biel.BielAPI.Com;
+
 public class WorldEventBus extends EventBus {
 	private UUID worldUUID;
+
+	@Override
+	protected boolean shouldRegisterImmediately() {
+		return false;
+	}
 	
 	public WorldEventBus() {
 		super();
 	}
 	public WorldEventBus(World world) {
 		super();
-		if(world != null){			
-			this.worldUUID = world.getUID();
-		}
+		setWorld(world);
 	}
 	public WorldEventBus(Player ply) {
 		super();
 		if(ply != null){
-			this.worldUUID = ply.getWorld().getUID();
+			setWorld(ply.getWorld());
 		}
 	}
 
@@ -47,6 +52,7 @@ public class WorldEventBus extends EventBus {
 			return;
 		}
 		this.worldUUID = world.getUID();
+		registerEventBus();
 	}
 	@Override
 	public boolean isValid() {
@@ -79,7 +85,7 @@ public class WorldEventBus extends EventBus {
 				return ((Entity) holder).getWorld() == getWorld();
 			}
 		}
-		System.out.println(MessageFormat.format("Event no verificat: {0} @ WorldEventBus", evt.getEventName()));
+		Com.getPlugin().getLogger().fine(MessageFormat.format("Event no verificat: {0} @ WorldEventBus", evt.getEventName()));
 		return true;
 	}
 //	@Override

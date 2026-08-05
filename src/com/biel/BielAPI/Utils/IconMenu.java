@@ -2,6 +2,9 @@ package com.biel.BielAPI.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -30,6 +33,7 @@ public class IconMenu extends EventBus{
 
 	private String[] optionNames;
 	private ItemStack[] optionIcons;
+	private final Set<Inventory> openedInventories = Collections.newSetFromMap(new IdentityHashMap<Inventory, Boolean>());
 
 	public IconMenu(String name, int size, OptionClickEventHandler handler) {
 		//super(p);
@@ -57,10 +61,11 @@ public class IconMenu extends EventBus{
 	public void open(Player player) {
 		Inventory inventory = Bukkit.createInventory(player, size, name);
 		for (int i = 0; i < optionIcons.length; i++) {
-			if (optionIcons != null) {
+			if (optionIcons[i] != null) {
 				inventory.setItem(i, optionIcons[i]);
 			}
 		}
+		openedInventories.add(inventory);
 		player.openInventory(inventory);
 	}
 
@@ -71,10 +76,10 @@ public class IconMenu extends EventBus{
 		plugin = null;
 		optionNames = null;
 		optionIcons = null;
+		openedInventories.clear();
 	}
 	public boolean isThisOne(Inventory inventory, InventoryHolder h) {
-		return true;
-//		return inventory.getTitle().equals(name) && inventory.getHolder() == h;
+		return openedInventories.contains(inventory);
 	}
 	@Override
 	protected void onInventoryClose(InventoryCloseEvent evt, Inventory inv) {
@@ -82,6 +87,7 @@ public class IconMenu extends EventBus{
 		super.onInventoryClose(evt, inv);
 		Inventory inventory = evt.getInventory();
 		if (isThisOne(inventory, evt.getPlayer())) {
+			openedInventories.remove(inventory);
 			destroy();
 			//TODO GET THIS OUT https://hub.spigotmc.org/jira/browse/SPIGOT-943
 		}

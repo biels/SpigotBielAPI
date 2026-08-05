@@ -39,7 +39,7 @@ public class EloUtils {
 				}else{
 					loosers_updated.add(link.getSecond());
 				}
-				System.out.println(link.getFirst());
+				com.biel.BielAPI.Com.getPlugin().getLogger().fine("Elo winner change: " + link.getFirst());
 			}
 			winners_updated.add(w_change);
 		}
@@ -57,7 +57,7 @@ public class EloUtils {
 				if(w_id == o_id)continue;
 				Pair<Double, Double> link = calculateEloChange(w, o, (w_id < o_id ? 1 : 2), K / orderedWinners.size(), false);
 				w_change  += link.getFirst();
-				System.out.println(link.getFirst());
+				com.biel.BielAPI.Com.getPlugin().getLogger().fine("Elo group change: " + link.getFirst());
 			}
 			result.add(w_change);
 		}
