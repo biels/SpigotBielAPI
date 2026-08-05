@@ -2,9 +2,12 @@ package com.biel.BielAPI.events;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
+import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.event.Event;
+
+import com.biel.BielAPI.Com;
 
 public class EventBusManager {
 	ArrayList<EventBus> buses = new ArrayList<EventBus>();
@@ -16,33 +19,31 @@ public class EventBusManager {
 		toAdd.clear();
 		buses.removeAll(toRemove);
 		toRemove.clear();
-		EventBus lastEventBus = null;
-		try {
-			for(EventBus bus: buses){
+		List<EventBus> dispatchSnapshot = new ArrayList<EventBus>(buses);
+		for(EventBus bus: dispatchSnapshot){
+			try {
 				bus.recieveEvent(evt);
-				lastEventBus = bus;
-			}
-		} catch (ConcurrentModificationException e) {			
-			if (lastEventBus != null) {
-				System.out.println("ConcurrentModificationException:");
-				System.out.println("Caused by: " + lastEventBus.toString() + " Event: " + evt.getEventName());
+			} catch (RuntimeException exception) {
+				Com.getPlugin().getLogger().log(Level.SEVERE,
+						"EventBus failure in " + bus + " while handling " + evt.getEventName(),
+						exception);
 			}
 		}
 	}
 	public synchronized void registerEventBus(EventBus bus){
-		if(buses.contains(bus)){
-			System.out.println("El canal d'eseveniments ja existeix @ " + bus.toString());
+		if(buses.contains(bus) || toAdd.contains(bus)){
+			Com.getPlugin().getLogger().warning("El canal d'esdeveniments ja existeix @ " + bus);
 		}else{
 			//System.out.println("Afegit el canal d'esdeveniments a la cua " + bus.getClass().getName());
 			toAdd.add(bus);
 		}
 	}
 	public synchronized void unregisterEventBus(EventBus bus){
-		if(buses.contains(bus)){
+		if(buses.contains(bus) && !toRemove.contains(bus)){
 			toRemove.add(bus);
 			//System.out.println("Esborrat el canal d'esdeveniments " + bus.getClass().getName());
 		}else{
-			System.out.println("El canal d'eseveniments ja no existia");
+			Com.getPlugin().getLogger().warning("El canal d'esdeveniments ja no existia");
 		}
 	}
 	public synchronized void unregisterInvalidBuses(){

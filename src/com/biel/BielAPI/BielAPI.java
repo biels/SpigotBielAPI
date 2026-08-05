@@ -19,14 +19,13 @@ public class BielAPI extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		generalListener = new GeneralListener();
-		System.out.println("Listener initialized");
 		evtgest = new EventBusManager();
-		System.out.println("EventBus initialized");
+		getLogger().info("Event bus initialized");
 	}
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		if(cmd.getName().equalsIgnoreCase("BielAPI")){
 			sender.sendMessage("API v" + version);
-			if(args[0].equalsIgnoreCase("stats")){
+			if(args.length > 0 && args[0].equalsIgnoreCase("stats")){
 				sender.sendMessage(evtgest.getStats());
 			}
 			return true;
