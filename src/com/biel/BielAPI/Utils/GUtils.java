@@ -14,6 +14,7 @@ import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -28,10 +29,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.metadata.Metadatable;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitTask;
@@ -284,7 +285,7 @@ public class GUtils {
 		ArrayList<BlockFace> faces = new ArrayList<BlockFace>();
 		for (BlockFace f : fToCheck){
 			Block bl = b.getRelative(f);
-			if (bl.getType() == Material.LEGACY_LOG){faces.add(f);}
+			if (Tag.LOGS.isTagged(bl.getType())){faces.add(f);}
 		}
 		return faces;
 	}
@@ -532,14 +533,16 @@ public class GUtils {
 		return a.get(0);
 	}
 	public static ItemStack getRandomPotion(){
-		Potion p = new Potion(getRandomPotionType());
-		if (GUtils.Possibilitat(55)){p.setSplash(true);}
-		//p.setLevel(1);
-		return p.toItemStack(1);
+		Material potionMaterial = GUtils.Possibilitat(55) ? Material.SPLASH_POTION : Material.POTION;
+		ItemStack potion = new ItemStack(potionMaterial);
+		PotionMeta potionMeta = (PotionMeta) potion.getItemMeta();
+		potionMeta.setBasePotionType(getRandomPotionType());
+		potion.setItemMeta(potionMeta);
+		return potion;
 	}
 	public static ArrayList<ItemStack> getBrewingItems(){
 		ArrayList<ItemStack> i = new ArrayList<ItemStack>();
-		i.add(new ItemStack(Material.LEGACY_NETHER_WARTS));
+		i.add(new ItemStack(Material.NETHER_WART));
 		i.add(new ItemStack(Material.GLOWSTONE));
 		i.add(new ItemStack(Material.REDSTONE));
 		i.add(new ItemStack(Material.SPIDER_EYE));
@@ -554,7 +557,7 @@ public class GUtils {
 		int lastIndex = 0;
 		ArrayList<String> parts = new ArrayList<String>();
 		while(parts.size() < 3){
-			System.out.println(lastIndex);
+			com.biel.BielAPI.Com.getPlugin().getLogger().fine("Readable-list index: " + lastIndex);
 			if (lastIndex > text.length()){
 				lastIndex = text.length() - 1;
 			}
@@ -566,8 +569,8 @@ public class GUtils {
 			if (endIndex == -1){
 				endIndex = text.length();
 			}
-			System.out.println("Begin: " + beginIndex);
-			System.out.println("End: " + endIndex);
+			com.biel.BielAPI.Com.getPlugin().getLogger().fine("Readable-list begin: " + beginIndex);
+			com.biel.BielAPI.Com.getPlugin().getLogger().fine("Readable-list end: " + endIndex);
 
 			parts.add(text.substring(beginIndex, endIndex));
 			lastIndex = endIndex;
@@ -794,7 +797,7 @@ public class GUtils {
 			int remAmount = s.getAmount();
 			for (Iterator<ItemStack> iterator = contents.iterator(); iterator.hasNext();) {
 				ItemStack i = iterator.next();
-				if(i.getType() != s.getType() || i.getData().getData() != s.getData().getData())continue;
+				if(!i.isSimilar(s))continue;
 				if(i.getAmount() - remAmount > 0){
 					i.setAmount(i.getAmount() - remAmount);
 					continue;

@@ -33,7 +33,7 @@ public class GestorPropietats {
 			//Close the input stream
 			in.close();
 		}catch (Exception e){//Catch exception if any
-			System.err.println("Error: " + e.getMessage());
+			com.biel.BielAPI.Com.getPlugin().getLogger().log(java.util.logging.Level.WARNING, "Error reading properties", e);
 		}
 		return Arr;
 	}
@@ -196,7 +196,7 @@ public class GestorPropietats {
 	}
 	public Cuboid ObtenirCuboid(String Nom, World world){
 		ArrayList<Location> locs = ObtenirLocations(Nom, world);
-		if (locs.size() != 2){System.out.println("Cuboid mal definit: " + Nom + ", " + Integer.toString(locs.size()) + " location(s)"); return null;}
+		if (locs.size() != 2){com.biel.BielAPI.Com.getPlugin().getLogger().warning("Cuboid mal definit: " + Nom + ", " + Integer.toString(locs.size()) + " location(s)"); return null;}
 		return new Cuboid(locs.get(0), locs.get(1));
 	}
 }

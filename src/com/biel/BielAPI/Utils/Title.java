@@ -1,10 +1,5 @@
 package com.biel.BielAPI.Utils;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -16,13 +11,6 @@ import org.bukkit.entity.Player;
  * @author Maxim Van de Wynckel
  */
 public class Title {
-	/* Title packet */
-	private Class<?> packetTitle;
-	/* Title packet actions ENUM */
-	private Class<?> packetActions;
-	/* Chat serializer */
-	private Class<?> nmsChatSerializer;
-	private Class<?> chatBaseComponent;
 	/* Title text and color */
 	private String title = "";
 	private ChatColor titleColor = ChatColor.WHITE;
@@ -35,8 +23,6 @@ public class Title {
 	private int fadeOutTime = -1;
 	private boolean ticks = false;
 
-	private static final Map<Class<?>, Class<?>> CORRESPONDING_TYPES = new HashMap<Class<?>, Class<?>>();
-
 	/**
 	 * Create a new 1.8 title
 	 * 
@@ -45,7 +31,6 @@ public class Title {
 	 */
 	public Title(String title) {
 		this.title = title;
-		loadClasses();
 	}
 
 	/**
@@ -59,7 +44,6 @@ public class Title {
 	public Title(String title, String subtitle) {
 		this.title = title;
 		this.subtitle = subtitle;
-		loadClasses();
 	}
 
 	/**
@@ -78,7 +62,6 @@ public class Title {
 		this.fadeOutTime = title.fadeOutTime;
 		this.stayTime = title.stayTime;
 		this.ticks = title.ticks;
-		loadClasses();
 	}
 
 	/**
@@ -102,17 +85,6 @@ public class Title {
 		this.fadeInTime = fadeInTime;
 		this.stayTime = stayTime;
 		this.fadeOutTime = fadeOutTime;
-		loadClasses();
-	}
-
-	/**
-	 * Load spigot and NMS classes
-	 */
-	private void loadClasses() {
-		packetTitle = getNMSClass("PacketPlayOutTitle");
-		packetActions = getNMSClass("PacketPlayOutTitle$EnumTitleAction");
-		chatBaseComponent = getNMSClass("IChatBaseComponent");
-		nmsChatSerializer = getNMSClass("IChatBaseComponent$ChatSerializer");
 	}
 
 	/**
@@ -224,7 +196,11 @@ public class Title {
 	 *            Player
 	 */
 	public void send(Player player) {
-		return;
+		int fadeInTicks = toTicks(fadeInTime, 10);
+		int stayTicks = toTicks(stayTime, 70);
+		int fadeOutTicks = toTicks(fadeOutTime, 20);
+		player.sendTitle(titleColor + title, subtitleColor + subtitle,
+				fadeInTicks, stayTicks, fadeOutTicks);
 	}
 
 	/**
@@ -243,19 +219,7 @@ public class Title {
 	 *            Player
 	 */
 	public void clearTitle(Player player) {
-		try {
-			// Send timings first
-			Object handle = getHandle(player);
-			Object connection = getField(handle.getClass(), "playerConnection")
-					.get(handle);
-			Object[] actions = packetActions.getEnumConstants();
-			Method sendPacket = getMethod(connection.getClass(), "sendPacket");
-			Object packet = packetTitle.getConstructor(packetActions,
-					chatBaseComponent).newInstance(actions[3], null);
-			sendPacket.invoke(connection, packet);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		player.clearTitle();
 	}
 
 	/**
@@ -265,112 +229,13 @@ public class Title {
 	 *            Player
 	 */
 	public void resetTitle(Player player) {
-		try {
-			// Send timings first
-			Object handle = getHandle(player);
-			Object connection = getField(handle.getClass(), "playerConnection")
-					.get(handle);
-			Object[] actions = packetActions.getEnumConstants();
-			Method sendPacket = getMethod(connection.getClass(), "sendPacket");
-			Object packet = packetTitle.getConstructor(packetActions,
-					chatBaseComponent).newInstance(actions[4], null);
-			sendPacket.invoke(connection, packet);
-		} catch (Exception e) {
-			e.printStackTrace();
+		player.resetTitle();
+	}
+
+	private int toTicks(int time, int defaultTicks) {
+		if (time < 0) {
+			return defaultTicks;
 		}
-	}
-
-	private static Class<?> getPrimitiveType(Class<?> clazz) {
-		return CORRESPONDING_TYPES.containsKey(clazz) ? CORRESPONDING_TYPES
-				.get(clazz) : clazz;
-	}
-
-	@SuppressWarnings("null")
-	private static Class<?>[] toPrimitiveTypeArray(Class<?>[] classes) {
-		int a = classes != null ? classes.length : 0;
-		Class<?>[] types = new Class<?>[a];
-		for (int i = 0; i < a; i++)
-			types[i] = getPrimitiveType(classes[i]);
-		return types;
-	}
-
-	private static boolean equalsTypeArray(Class<?>[] a, Class<?>[] o) {
-		if (a.length != o.length)
-			return false;
-		for (int i = 0; i < a.length; i++)
-			if (!a[i].equals(o[i]) && !a[i].isAssignableFrom(o[i]))
-				return false;
-		return true;
-	}
-
-	private static Object getHandle(Object obj) {
-		try {
-			return getMethod("getHandle", obj.getClass()).invoke(obj);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	private static Method getMethod(String name, Class<?> clazz,
-			Class<?>... paramTypes) {
-		Class<?>[] t = toPrimitiveTypeArray(paramTypes);
-		for (Method m : clazz.getMethods()) {
-			Class<?>[] types = toPrimitiveTypeArray(m.getParameterTypes());
-			if (m.getName().equals(name) && equalsTypeArray(types, t))
-				return m;
-		}
-		return null;
-	}
-
-	private static String getVersion() {
-		String name = Bukkit.getServer().getClass().getPackage().getName();
-		String version = name.substring(name.lastIndexOf('.') + 1) + ".";
-		return version;
-	}
-
-	private static Class<?> getNMSClass(String className) {
-		String fullName = "net.minecraft.server." + getVersion() + className;
-		Class<?> clazz = null;
-		try {
-			clazz = Class.forName(fullName);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return clazz;
-	}
-
-	private static Field getField(Class<?> clazz, String name) {
-		try {
-			Field field = clazz.getDeclaredField(name);
-			field.setAccessible(true);
-			return field;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	private static Method getMethod(Class<?> clazz, String name, Class<?>... args) {
-		for (Method m : clazz.getMethods())
-			if (m.getName().equals(name)
-					&& (args.length == 0 || ClassListEqual(args,
-							m.getParameterTypes()))) {
-				m.setAccessible(true);
-				return m;
-			}
-		return null;
-	}
-
-	private static boolean ClassListEqual(Class<?>[] l1, Class<?>[] l2) {
-		boolean equal = true;
-		if (l1.length != l2.length)
-			return false;
-		for (int i = 0; i < l1.length; i++)
-			if (l1[i] != l2[i]) {
-				equal = false;
-				break;
-			}
-		return equal;
+		return ticks ? time : Math.multiplyExact(time, 20);
 	}
 }
