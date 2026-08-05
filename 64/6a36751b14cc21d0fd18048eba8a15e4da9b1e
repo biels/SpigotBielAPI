@@ -1,0 +1,35 @@
+src/com/biel/BielAPI/events/WorldEventBus.java
+  s_d22295457e46f7::t_90825b580adf83 20-21
+  s_d22295457e46f7::t_5434afb516ccd4 35,40
+  s_d22295457e46f7::t_7ea4e872a3b1f4 88
+  s_d22295457e46f7::t_bee47277d95d4f 24-28,55
+src/com/biel/BielAPI/BielAPI.java
+  s_d22295457e46f7::t_89563fa3c6bd04 28
+  s_d22295457e46f7::t_a96227be1c8b06 23
+src/com/biel/BielAPI/events/EventBusManager.java
+  s_d22295457e46f7::t_7ea4e872a3b1f4 35,46
+  s_d22295457e46f7::t_c254c28a719c45 5-6,10-11,22-24,26-29,34,42
+src/com/biel/BielAPI/events/EventBus.java
+  s_d22295457e46f7::t_89563fa3c6bd04 90,96
+  s_d22295457e46f7::t_acd6b0894434d4 464-467
+  s_d22295457e46f7::t_bee47277d95d4f 40,42-44,47-54
+  s_d22295457e46f7::t_cd98616001a181 38,71-72
+src/com/biel/BielAPI/Utils/IconMenu.java
+  s_d22295457e46f7::t_c254c28a719c45 5-7,36,64,68,79,82,90
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "646a36751b14cc21d0fd18048eba8a15e4da9b1e",
+  "prompts": {},
+  "sessions": {
+    "s_d22295457e46f7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fcdbd-8cf2-7d71-bda1-2a659e272119",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
