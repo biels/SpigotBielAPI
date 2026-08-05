@@ -149,13 +149,12 @@ public class EventBus { //Bus d'esdeveniments del joc
 			if (event instanceof ProjectileLaunchEvent){
 				ProjectileLaunchEvent evt = (ProjectileLaunchEvent)event;
 				Projectile proj = evt.getEntity();
-				LivingEntity shooter = (LivingEntity) proj.getShooter();
 				onProjectileLaunch(evt, proj);
 			}
 			if (event instanceof ProjectileHitEvent){
 				ProjectileHitEvent evt = (ProjectileHitEvent)event;
 				Projectile proj = evt.getEntity();
-				LivingEntity shooter = (LivingEntity) proj.getShooter();
+				ProjectileSource shooter = proj.getShooter();
 				onProjectileHit(evt, proj);
 				//Block Hit
 				World world = entity.getWorld();
@@ -354,6 +353,10 @@ public class EventBus { //Bus d'esdeveniments del joc
 				InventoryClickEvent evt = (InventoryClickEvent) event;
 				onInventoryClick(evt, inv);
 			}
+			if(event instanceof InventoryDragEvent){
+				InventoryDragEvent evt = (InventoryDragEvent) event;
+				onInventoryDrag(evt, inv);
+			}
 		}
 	}
 
@@ -525,6 +528,8 @@ public class EventBus { //Bus d'esdeveniments del joc
 	protected void onFurnaceSmelt(FurnaceSmeltEvent evt, Block blk, Furnace f) {
 	}
 	protected void onInventoryClick(InventoryClickEvent evt, Inventory inv) {
+	}
+	protected void onInventoryDrag(InventoryDragEvent evt, Inventory inv) {
 	}
 	protected void onInventoryClose(InventoryCloseEvent evt, Inventory inv) {
 	}

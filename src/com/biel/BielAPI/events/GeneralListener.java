@@ -175,6 +175,8 @@ public class GeneralListener implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent evt) {h(evt);}
 	@EventHandler
+	public void onInventoryDrag(InventoryDragEvent evt) {h(evt);}
+	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent evt) {h(evt);}
 	@EventHandler
 	public void onInventoryOpen(InventoryOpenEvent evt) {h(evt);}
