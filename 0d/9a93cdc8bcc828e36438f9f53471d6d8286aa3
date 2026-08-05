@@ -1,0 +1,32 @@
+src/com/biel/BielAPI/Utils/FireworkEffectPlayer.java
+  s_d22295457e46f7::t_afe08523af109c 52,54
+src/com/biel/BielAPI/Utils/Title.java
+  s_d22295457e46f7::t_368d642e0560d8 199-203,222,232,235-237,239,241
+src/com/biel/BielAPI/Utils/fireworks/FireworkSpawner.java
+  s_d22295457e46f7::t_f0acec7e40e24d 7-8,19-21,34
+  s_d22295457e46f7::t_cd0c35891b568f 12-14,22-27,29-32
+src/com/biel/BielAPI/Utils/GestorPropietats.java
+  s_d22295457e46f7::t_7ea4e872a3b1f4 36,199
+src/com/biel/BielAPI/Utils/EloUtils.java
+  s_d22295457e46f7::t_7ea4e872a3b1f4 42,60
+src/com/biel/BielAPI/Utils/GUtils.java
+  s_d22295457e46f7::t_994f4558364f40 32,536-541,545
+  s_d22295457e46f7::t_7ea4e872a3b1f4 560,572-573
+  s_d22295457e46f7::t_f0acec7e40e24d 17,288,800
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "0d9a93cdc8bcc828e36438f9f53471d6d8286aa3",
+  "prompts": {},
+  "sessions": {
+    "s_d22295457e46f7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fcdbd-8cf2-7d71-bda1-2a659e272119",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
