@@ -1,6 +1,7 @@
 package com.biel.BielAPI.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class EloUtils {
 	public static Pair<Double, Double> calculateEloChange(double elo1, double elo2, int winner, double K, boolean absolute){
@@ -23,43 +24,50 @@ public class EloUtils {
 			   E2 = R2 / (R1 + R2); 
 		return new Pair<Double, Double>(E1, E2);
 	}
+	/**
+	 * Rating changes for a match between two groups, in the order the groups were
+	 * given: result 0 pairs with {@code winners}, result 1 with {@code loosers}.
+	 *
+	 * Players are addressed by position throughout. This used to find each rating's
+	 * index by value, so two players with equal ratings shared one accumulator and
+	 * the loser list came back shorter than the losers - and equal ratings are the
+	 * norm, since every newcomer starts at the same average.
+	 */
 	public static ArrayList<ArrayList<Double>> calculateEloGroupChange(ArrayList<Double> winners, ArrayList<Double> loosers, double K, boolean absolute){
-		ArrayList<ArrayList<Double>> results = new ArrayList<ArrayList<Double>>();
-		ArrayList<Double> winners_updated = new ArrayList<Double>();
-		ArrayList<Double> loosers_updated = new ArrayList<Double>();
-		for(Double w : winners){
-			int w_id = winners.indexOf(w);
-			Double w_change = 0D;
-			for(Double l : loosers){
-				int l_id = loosers.indexOf(l);
-				Pair<Double, Double> link = calculateEloChange(w, l, 1, K / loosers.size(), false);
-				w_change  += link.getFirst() * 1.15;
-				if(loosers_updated.size() > l_id){ // 1 > 0
-					loosers_updated.set(l_id, loosers_updated.get(l_id) + link.getSecond());
-				}else{
-					loosers_updated.add(link.getSecond());
-				}
+		ArrayList<Double> winnersUpdated = new ArrayList<Double>(winners.size());
+		ArrayList<Double> loosersUpdated = new ArrayList<Double>(Collections.nCopies(loosers.size(), 0D));
+		for (int w = 0; w < winners.size(); w++) {
+			double winnerChange = 0D;
+			for (int l = 0; l < loosers.size(); l++) {
+				Pair<Double, Double> link = calculateEloChange(winners.get(w), loosers.get(l), 1, K / loosers.size(), false);
+				winnerChange += link.getFirst() * 1.15;
+				loosersUpdated.set(l, loosersUpdated.get(l) + link.getSecond());
 				com.biel.BielAPI.Com.getPlugin().getLogger().fine("Elo winner change: " + link.getFirst());
 			}
-			winners_updated.add(w_change);
+			winnersUpdated.add(winnerChange);
 		}
-		results.add(winners_updated);
-		results.add(loosers_updated);
+		ArrayList<ArrayList<Double>> results = new ArrayList<ArrayList<Double>>();
+		results.add(winnersUpdated);
+		results.add(loosersUpdated);
 		return results;
 	}
+	/**
+	 * Rating changes for a ranked finish, one per entry of {@code orderedWinners} in
+	 * the same order; earlier entries beat every later one. Positional for the same
+	 * reason as above: comparing indices found by value made two equally rated
+	 * players skip each other's pairing entirely.
+	 */
 	public static ArrayList<Double> calculateEloGroupChange(ArrayList<Double> orderedWinners, double K, boolean absolute){
-		ArrayList<Double> result = new ArrayList<Double>();
-		for(Double w : orderedWinners){
-			int w_id = orderedWinners.indexOf(w);
-			Double w_change = 0D;
-			for(Double o : orderedWinners){
-				int o_id = orderedWinners.indexOf(o);
-				if(w_id == o_id)continue;
-				Pair<Double, Double> link = calculateEloChange(w, o, (w_id < o_id ? 1 : 2), K / orderedWinners.size(), false);
-				w_change  += link.getFirst();
+		ArrayList<Double> result = new ArrayList<Double>(orderedWinners.size());
+		for (int w = 0; w < orderedWinners.size(); w++) {
+			double change = 0D;
+			for (int o = 0; o < orderedWinners.size(); o++) {
+				if (w == o) continue;
+				Pair<Double, Double> link = calculateEloChange(orderedWinners.get(w), orderedWinners.get(o), (w < o ? 1 : 2), K / orderedWinners.size(), false);
+				change += link.getFirst();
 				com.biel.BielAPI.Com.getPlugin().getLogger().fine("Elo group change: " + link.getFirst());
 			}
-			result.add(w_change);
+			result.add(change);
 		}
 		return result;
 	}
