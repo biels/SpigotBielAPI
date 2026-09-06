@@ -99,22 +99,29 @@ public class IconMenu extends EventBus{
 		if (isThisOne(evt.getInventory(), evt.getWhoClicked())) {
 			evt.setCancelled(true);
 			int slot = evt.getRawSlot();
-			if (optionNames != null && slot >= 0 && slot < size && optionNames[slot] != null) {
-				Plugin plugin = this.plugin;
-				OptionClickEvent e = new OptionClickEvent((Player)evt.getWhoClicked(), slot, optionNames[slot], this);
-				handler.onOptionClick(e);
-				if (e.willClose()) {
-					final Player p = (Player)evt.getWhoClicked();
-					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-						public void run() {
-							p.closeInventory();
-						}
-					}, 1);
-				}
-				if (e.willDestroy()) {
-					destroy();
-				}
+			if (optionNames != null && slot >= 0 && slot < size && optionNames[slot] != null && plugin != null) {
+				final Player player = (Player) evt.getWhoClicked();
+				final String optionName = optionNames[slot];
+				// The option runs on the next tick, once the cancelled click has been
+				// answered. Some options do slow work on the main thread - creating a
+				// game instance copies a world folder and loads it - and while that ran
+				// inside the event the client kept showing the clicked item on the
+				// cursor, as if it had been picked up.
+				Bukkit.getScheduler().runTask(plugin, () -> dispatchOptionClick(player, slot, optionName));
 			}
+		}
+	}
+	private void dispatchOptionClick(Player player, int slot, String optionName) {
+		OptionClickEventHandler handler = this.handler;
+		Plugin plugin = this.plugin;
+		if (handler == null || plugin == null) return; // destroyed between the click and this tick
+		OptionClickEvent e = new OptionClickEvent(player, slot, optionName, this);
+		handler.onOptionClick(e);
+		if (e.willClose()) {
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, player::closeInventory, 1);
+		}
+		if (e.willDestroy()) {
+			destroy();
 		}
 	}
 
