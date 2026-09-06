@@ -42,7 +42,6 @@ public class EloUtils {
 				Pair<Double, Double> link = calculateEloChange(winners.get(w), loosers.get(l), 1, K / loosers.size(), false);
 				winnerChange += link.getFirst() * 1.15;
 				loosersUpdated.set(l, loosersUpdated.get(l) + link.getSecond());
-				com.biel.BielAPI.Com.getPlugin().getLogger().fine("Elo winner change: " + link.getFirst());
 			}
 			winnersUpdated.add(winnerChange);
 		}
@@ -65,7 +64,6 @@ public class EloUtils {
 				if (w == o) continue;
 				Pair<Double, Double> link = calculateEloChange(orderedWinners.get(w), orderedWinners.get(o), (w < o ? 1 : 2), K / orderedWinners.size(), false);
 				change += link.getFirst();
-				com.biel.BielAPI.Com.getPlugin().getLogger().fine("Elo group change: " + link.getFirst());
 			}
 			result.add(change);
 		}

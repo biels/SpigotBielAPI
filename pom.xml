@@ -26,9 +26,16 @@
 			<version>${paper.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.13.4</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -36,6 +43,10 @@
 				<configuration>
 					<release>${maven.compiler.release}</release>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.5.3</version>
 			</plugin>
 		</plugins>
 		<finalName>BielAPI-${project.version}</finalName>
