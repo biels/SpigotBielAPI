@@ -1,0 +1,19 @@
+src/com/biel/BielAPI/Utils/IconMenu.java
+  s_37c860f956d9c1::t_cd852cdcf25ccd 102-110,114-126
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "62813afa6e6d1ccd3cd58c2390b98ddcf7d0081b",
+  "prompts": {},
+  "sessions": {
+    "s_37c860f956d9c1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "afb33328-aad9-41a6-b433-7b3c288af88d",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
