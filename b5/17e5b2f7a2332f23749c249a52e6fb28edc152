@@ -1,0 +1,21 @@
+pom.xml
+  s_37c860f956d9c1::t_37f52050b5159d 29-34,38,47-50
+test/com/biel/BielAPI/Utils/EloUtilsTest.java
+  s_37c860f956d9c1::t_b8d14fa08fb106 1-53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "b517e5b2f7a2332f23749c249a52e6fb28edc152",
+  "prompts": {},
+  "sessions": {
+    "s_37c860f956d9c1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "afb33328-aad9-41a6-b433-7b3c288af88d",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
