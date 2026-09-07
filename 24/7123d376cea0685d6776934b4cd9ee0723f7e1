@@ -1,0 +1,19 @@
+src/com/biel/BielAPI/Utils/RecallUtils.java
+  s_7b6c09563aa3f2::t_46922c87ad50ed 318-329
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "247123d376cea0685d6776934b4cd9ee0723f7e1",
+  "prompts": {},
+  "sessions": {
+    "s_7b6c09563aa3f2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "45ffe817-45cc-4ba0-b329-948f96d377bb",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
