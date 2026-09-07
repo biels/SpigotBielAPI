@@ -26,7 +26,19 @@ public class GeneralListener implements Listener {
 		plugin.getLogger().info("Listener (G) created!");
 
 	}
+	/**
+	 * The handlers below overlap: a PlayerDeathEvent is also an EntityDeathEvent, an
+	 * EntityDamageByEntityEvent also an EntityDamageEvent, and two handlers are declared
+	 * for the death itself, so one event used to reach the games two or three times (a
+	 * kill paid three times, three wither skeletons for one death, 2026-09-08). Bukkit
+	 * calls the handlers of one event in a row, so the last event object is enough to
+	 * forward each event exactly once.
+	 */
+	private Event lastForwarded;
+
 	public void h(Event evt) { //Handle
+		if (evt == lastForwarded) return;
+		lastForwarded = evt;
 		Com.getPlugin().evtgest.recieveEvent(evt);
 	}
 
