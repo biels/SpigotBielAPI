@@ -315,6 +315,18 @@ public class RecallUtils {
 			}
 		}, 1L);
 	}
+	/** Whether the player is channelling a recall right now. */
+	public static boolean isRecalling(Player p){
+		return isInRecall(p);
+	}
+
+	/** Breaks a running channel from outside, as a hit does in a game that forbids recalling in combat. */
+	public static void interruptRecall(Player p){
+		if (!isInRecall(p)) return;
+		cancelRecallTask(p.getName());
+		setInRecall(p, false);
+	}
+
 	private static Boolean isInRecall(Player p){
 		//Metadata
 		MetadataValue m = GUtils.getMetadata(p, "isInRecall");
