@@ -1,0 +1,27 @@
+src/com/biel/BielAPI/ai/RangedAttackGoal.java
+  s_af9e59dadbd62d::t_fb0e35c15d5403 1-94
+src/com/biel/BielAPI/ai/NearestTargetGoal.java
+  s_af9e59dadbd62d::t_8f90a26ca0eeaa 1-98
+src/com/biel/BielAPI/ai/Volley.java
+  s_af9e59dadbd62d::t_d9c5e16d87c548 1-50
+src/com/biel/BielAPI/ai/MeleeAttackGoal.java
+  s_af9e59dadbd62d::t_0d2991c9d72171 1-88
+src/com/biel/BielAPI/ai/WaypointWalkGoal.java
+  s_af9e59dadbd62d::t_c20555643aa5da 1-84
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "05f0fdcbcbb60438c8f15692275adb9d3bb419d5",
+  "prompts": {},
+  "sessions": {
+    "s_af9e59dadbd62d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d6ed85dc-36af-4611-8f0a-fa0ab8f24f21",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
