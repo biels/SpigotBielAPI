@@ -1,0 +1,19 @@
+src/com/biel/BielAPI/events/GeneralListener.java
+  s_7b6c09563aa3f2::t_eb0ed2fe0f9e5c 29-38,40-41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "5c4c7805ab2f812b195bf3f36fc96d2793cec397",
+  "prompts": {},
+  "sessions": {
+    "s_7b6c09563aa3f2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "45ffe817-45cc-4ba0-b329-948f96d377bb",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
