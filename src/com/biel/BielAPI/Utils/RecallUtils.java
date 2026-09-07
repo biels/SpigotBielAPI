@@ -170,6 +170,11 @@ public class RecallUtils {
         return !(blk.isLiquid() || !blk.getType().isBlock() || blk.isEmpty() || !blk.getType().isSolid());
     }
 	public static void startRecallTeleport(Player p, final Location l){
+		startRecallTeleport(p, l, 6);
+	}
+
+	/** {@code baseSeconds}: the channel before distance is added; a game picks its own (Obsidian Defenders 3, the rest 6). */
+	public static void startRecallTeleport(Player p, final Location l, double baseSeconds){
 		if (isInRecall(p)){return;}
 		//PRE-CHECK
 		if(!checkRecallArea(p.getLocation())){
@@ -189,7 +194,7 @@ public class RecallUtils {
 		final String plyStr = p.getName();
 		final String plyloc = GUtils.writeHumanReadableLocation(p.getLocation(), false);
 		double distance = p.getLocation().distance(l);
-		int preTotal = (int) Math.round(20 * (6 + distance * 0.01));
+		int preTotal = (int) Math.round(20 * (baseSeconds + distance * 0.01));
 		if (preTotal > 8 * 20){preTotal = 8 * 20;}
 		final int total = preTotal; //Ticks
 		final int taskid =  scheduler.scheduleSyncRepeatingTask(Com.getPlugin(), new Runnable() {
@@ -220,6 +225,8 @@ public class RecallUtils {
 					pitch = (float) (max * dp - (decay * (recallProgress - dp)));
 				}
 				ply.getWorld().playSound(ply.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 3F, pitch);
+				int secondsLeft = (int) Math.ceil((1D - recallProgress) * total / 20D);
+				ply.sendActionBar(net.kyori.adventure.text.Component.text("Tornant a la base: " + secondsLeft + " s", net.kyori.adventure.text.format.NamedTextColor.AQUA));
 				//------------------
 				boolean moved = !plyloc.equalsIgnoreCase(GUtils.writeHumanReadableLocation(ply.getLocation(), false));
 				boolean damaged = ply.getHealth() != ply.getMaxHealth();
