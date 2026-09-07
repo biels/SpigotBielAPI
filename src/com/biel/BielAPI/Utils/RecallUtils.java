@@ -207,11 +207,11 @@ public class RecallUtils {
 		final Color dust = colour == null ? Color.WHITE : colour;
 		//PRE-CHECK
 		if(!checkRecallArea(p.getLocation())){
-			p.sendMessage("Posici� no v�lida per fer recall. Torna-ho a intentar en un lloc pl�.");
+			p.sendActionBar(net.kyori.adventure.text.Component.text("No pots tornar des d'aquí: prova en un lloc pla.", net.kyori.adventure.text.format.NamedTextColor.RED));
 			return;
 		}
 		if (!checkDestArea(l)){
-			p.sendMessage("El punt de dest� no �s v�lid o est� obstru�t.");
+			p.sendActionBar(net.kyori.adventure.text.Component.text("La base no és lliure: torna-ho a provar.", net.kyori.adventure.text.format.NamedTextColor.RED));
 			return;
 		}
 		//START
@@ -261,7 +261,7 @@ public class RecallUtils {
 //					cancelled = true;
 //				}
 				if (moved){
-					ply.sendMessage("No et pots moure durant el recall!");
+					ply.sendActionBar(net.kyori.adventure.text.Component.text("Tornada interrompuda: t'has mogut.", net.kyori.adventure.text.format.NamedTextColor.RED));
 					cancelled = true;
 				}
 				if (cancelled){
