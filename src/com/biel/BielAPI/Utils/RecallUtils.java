@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -52,6 +53,26 @@ public class RecallUtils {
 		}
 		
 	}
+	/**
+	 * Three rings of light around the player, 1.25 blocks apart at the start, that close in
+	 * on the body as the channel runs, turning a little each tick, and a thread of motes
+	 * rising from the feet that thickens toward the end.
+	 */
+	private static void drawRecallParticles(Player p, double progress){
+		World w = p.getWorld();
+		Location centre = p.getLocation().add(0, 1.1, 0);
+		double turn = progress * Math.PI * 4;
+		for (int wave = 1; wave <= 3; wave++){
+			double radius = 1.25 * wave * (1 - progress) + 0.2;
+			for (int i = 0; i < 10; i++){
+				double angle = turn + i * Math.PI / 5 + wave;
+				w.spawnParticle(Particle.END_ROD, centre.clone().add(radius * Math.cos(angle), (wave - 2) * 0.25 * (1 - progress), radius * Math.sin(angle)), 1, 0, 0, 0, 0);
+			}
+		}
+		int motes = 1 + (int) Math.round(progress * 4);
+		w.spawnParticle(Particle.PORTAL, p.getLocation().add(0, 0.2, 0), motes, 0.2, 0, 0.2, 0.5);
+	}
+
 	private static void spawnRecallAnimItems(Location center, int waves){
 		World w = center.getWorld();
 
@@ -188,7 +209,6 @@ public class RecallUtils {
 		//START
 		setInRecall(p, true);
 		setRecallProgress(p, 0D);
-		spawnRecallAnimItems(p.getLocation(), 3);
 		//p.getLocation().setPitch(-90);
 		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
 		final String plyStr = p.getName();
@@ -208,13 +228,9 @@ public class RecallUtils {
 				
 				Double recallProgress = getRecallProgress(ply);
 				boolean cancelled = false;
-				//----ANIMATION-----
-				ArrayList<Item> recallItems = getRecallanimItems(ply);
-				if (recallItems != null){
-					magnetRecallAnimItems(ply, recallItems, total);
-				}else{
-					cancelled = true;
-				}
+				//----ANIMATION----- (particles, 2026-09-08; it used to be rings of dropped diamond blocks drawn to the player)
+				ArrayList<Item> recallItems = null;
+				drawRecallParticles(ply, recallProgress);
 				//----SOUND----
 				float max = 2.6F;
 				float pitch = (float) (max * recallProgress);
@@ -249,7 +265,9 @@ public class RecallUtils {
 					cancelRecallCompletely(plyStr, ply, recallItems);
 					Location loc = l.clone().add(0.5,1,0.5);
 					loc.setPitch(0);
+					ply.getWorld().spawnParticle(Particle.PORTAL, ply.getLocation().add(0, 1, 0), 60, 0.4, 0.8, 0.4, 0.6);
 					ply.teleport(loc);
+					loc.getWorld().spawnParticle(Particle.END_ROD, loc.clone().add(0, 1, 0), 40, 0.4, 0.8, 0.4, 0.05);
 					//ply.sendMessage("Transportat!");
 					
 				}
