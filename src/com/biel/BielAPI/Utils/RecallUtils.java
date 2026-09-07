@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -54,23 +55,21 @@ public class RecallUtils {
 		
 	}
 	/**
-	 * Three rings of light around the player, 1.25 blocks apart at the start, that close in
-	 * on the body as the channel runs, turning a little each tick, and a thread of motes
-	 * rising from the feet that thickens toward the end.
+	 * A ring of the team's dust on the ground around the feet, a block and a bit wide at
+	 * the start, closing in as the channel runs and turning a little each tick, and a mote
+	 * or two drifting up from it. Small on purpose (Biel, 2026-09-08: "it's just a recall").
 	 */
-	private static void drawRecallParticles(Player p, double progress){
+	private static void drawRecallParticles(Player p, double progress, Color colour){
 		World w = p.getWorld();
-		Location centre = p.getLocation().add(0, 1.1, 0);
-		double turn = progress * Math.PI * 4;
-		for (int wave = 1; wave <= 3; wave++){
-			double radius = 1.25 * wave * (1 - progress) + 0.2;
-			for (int i = 0; i < 10; i++){
-				double angle = turn + i * Math.PI / 5 + wave;
-				w.spawnParticle(Particle.END_ROD, centre.clone().add(radius * Math.cos(angle), (wave - 2) * 0.25 * (1 - progress), radius * Math.sin(angle)), 1, 0, 0, 0, 0);
-			}
+		Location feet = p.getLocation().add(0, 0.1, 0);
+		Particle.DustOptions dust = new Particle.DustOptions(colour, 0.9F);
+		double radius = 1.2 * (1 - progress) + 0.15;
+		double turn = progress * Math.PI * 3;
+		for (int i = 0; i < 12; i++){
+			double angle = turn + i * Math.PI / 6;
+			w.spawnParticle(Particle.DUST, feet.clone().add(radius * Math.cos(angle), 0, radius * Math.sin(angle)), 1, 0, 0, 0, 0, dust);
 		}
-		int motes = 1 + (int) Math.round(progress * 4);
-		w.spawnParticle(Particle.PORTAL, p.getLocation().add(0, 0.2, 0), motes, 0.2, 0, 0.2, 0.5);
+		w.spawnParticle(Particle.DUST, feet.clone().add(0, 0.3 + progress * 1.2, 0), 1, 0.15, 0.1, 0.15, 0, dust);
 	}
 
 	private static void spawnRecallAnimItems(Location center, int waves){
@@ -194,9 +193,18 @@ public class RecallUtils {
 		startRecallTeleport(p, l, 6);
 	}
 
-	/** {@code baseSeconds}: the channel before distance is added; a game picks its own (Obsidian Defenders 3, the rest 6). */
 	public static void startRecallTeleport(Player p, final Location l, double baseSeconds){
+		startRecallTeleport(p, l, baseSeconds, null);
+	}
+
+	/**
+	 * {@code baseSeconds}: the channel before distance is added; a game picks its own (Obsidian
+	 * Defenders 3, the rest 6). {@code colour}: the team's, for the ring of dust at the feet; null
+	 * for white.
+	 */
+	public static void startRecallTeleport(Player p, final Location l, double baseSeconds, Color colour){
 		if (isInRecall(p)){return;}
+		final Color dust = colour == null ? Color.WHITE : colour;
 		//PRE-CHECK
 		if(!checkRecallArea(p.getLocation())){
 			p.sendMessage("Posici� no v�lida per fer recall. Torna-ho a intentar en un lloc pl�.");
@@ -230,7 +238,7 @@ public class RecallUtils {
 				boolean cancelled = false;
 				//----ANIMATION----- (particles, 2026-09-08; it used to be rings of dropped diamond blocks drawn to the player)
 				ArrayList<Item> recallItems = null;
-				drawRecallParticles(ply, recallProgress);
+				drawRecallParticles(ply, recallProgress, dust);
 				//----SOUND----
 				float max = 2.6F;
 				float pitch = (float) (max * recallProgress);
@@ -265,9 +273,10 @@ public class RecallUtils {
 					cancelRecallCompletely(plyStr, ply, recallItems);
 					Location loc = l.clone().add(0.5,1,0.5);
 					loc.setPitch(0);
-					ply.getWorld().spawnParticle(Particle.PORTAL, ply.getLocation().add(0, 1, 0), 60, 0.4, 0.8, 0.4, 0.6);
+					Particle.DustOptions puff = new Particle.DustOptions(dust, 1.0F);
+					ply.getWorld().spawnParticle(Particle.DUST, ply.getLocation().add(0, 0.3, 0), 16, 0.5, 0.2, 0.5, 0, puff);
 					ply.teleport(loc);
-					loc.getWorld().spawnParticle(Particle.END_ROD, loc.clone().add(0, 1, 0), 40, 0.4, 0.8, 0.4, 0.05);
+					loc.getWorld().spawnParticle(Particle.DUST, loc.clone().add(0, 0.3, 0), 16, 0.5, 0.2, 0.5, 0, puff);
 					//ply.sendMessage("Transportat!");
 					
 				}
