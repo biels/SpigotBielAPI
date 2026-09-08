@@ -35,7 +35,7 @@ import com.biel.BielAPI.Com;
 import com.biel.BielAPI.Utils.GUtils;
 
 public class EventBus { //Bus d'esdeveniments del joc
-	private Event lastReceivedEvent;
+	private final EventDeliveries deliveries = new EventDeliveries();
 	private boolean destroyed = false;
 	private boolean registered = false;
 	public EventBus() {
@@ -68,8 +68,7 @@ public class EventBus { //Bus d'esdeveniments del joc
 	}
 	public synchronized void recieveEvent(Event evt) {
 		if(!isValid())return;
-		if(lastReceivedEvent == evt)return;
-		lastReceivedEvent = evt;
+		if(!deliveries.first(evt))return;
 		if (verifyEvent(evt)){gameEvent(evt);}
 	}
 	protected synchronized void gameEvent(Event event){

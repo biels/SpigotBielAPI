@@ -31,14 +31,13 @@ public class GeneralListener implements Listener {
 	 * EntityDamageByEntityEvent also an EntityDamageEvent, and two handlers are declared
 	 * for the death itself, so one event used to reach the games two or three times (a
 	 * kill paid three times, three wither skeletons for one death, 2026-09-08). Bukkit
-	 * calls the handlers of one event in a row, so the last event object is enough to
-	 * forward each event exactly once.
+	 * can dispatch nested events between those handlers, so remembering only the last
+	 * event allows the outer death to be delivered again after its rewards spawn mobs.
 	 */
-	private Event lastForwarded;
+	private final EventDeliveries deliveries = new EventDeliveries();
 
 	public void h(Event evt) { //Handle
-		if (evt == lastForwarded) return;
-		lastForwarded = evt;
+		if (!deliveries.first(evt)) return;
 		Com.getPlugin().evtgest.recieveEvent(evt);
 	}
 
