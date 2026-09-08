@@ -1,0 +1,41 @@
+src/com/biel/BielAPI/events/PlayerWorldEventBus.java
+  s_6b5a2f54eee20a::t_11237418ebd898 37-38
+src/com/biel/BielAPI/events/EventBusManager.java
+  s_6b5a2f54eee20a::t_85c75d1e0b9fe0 6-7,15,20-21,32,35,48-49
+src/com/biel/BielAPI/events/EventBus.java
+  s_6b5a2f54eee20a::t_85c75d1e0b9fe0 54-56,72,172-173,467
+  s_6b5a2f54eee20a::t_6c1c29363c646d 81-84
+src/com/biel/BielAPI/events/EventUtils.java
+  s_6b5a2f54eee20a::t_c10da45377c59b 11,13-14,25-28,33
+  s_6b5a2f54eee20a::t_11237418ebd898 6-7,15,19-21,23-24,34-48
+  s_6b5a2f54eee20a::t_23ee22266ffdea 29-32
+src/com/biel/BielAPI/events/GeneralListener.java
+  s_6b5a2f54eee20a::t_863f5d77ccdae3 29
+src/com/biel/BielAPI/events/WorldEventBus.java
+  s_6b5a2f54eee20a::t_11237418ebd898 55,78
+test/com/biel/BielAPI/events/EventRoutingTest.java
+  s_6b5a2f54eee20a::t_0f122f5c3bdd6a 1-9,11,13,15-19,22,28-40,42-48,58-124,190-199
+  s_6b5a2f54eee20a::t_61507258e5f1dc 14,171-173,175-178
+  s_6b5a2f54eee20a::t_6c1c29363c646d 12,20-21,138-150
+  s_6b5a2f54eee20a::t_c10da45377c59b 23-24,179-189
+  s_6b5a2f54eee20a::t_863f5d77ccdae3 41,49-57
+  s_6b5a2f54eee20a::t_3c9724339a14df 10,25-27,125-137,151-170,174
+docs/event-routing-review.md
+  s_6b5a2f54eee20a::t_ba342e7e147f20 1-67
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "0a6ddfd33ab62f6aa8c953315c507517ba0ad8d4",
+  "prompts": {},
+  "sessions": {
+    "s_6b5a2f54eee20a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0817b-4c49-7a80-a6e4-989efc4606e5",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
