@@ -1,0 +1,26 @@
+src/com/biel/BielAPI/Utils/IconMenu.java
+  s_6b5a2f54eee20a::t_7129baf9fe68df 6,10-11,14,33-42,45-46,67,71-82,88,94,96-99,111,117-124,126-129,131-144,146-148,151,153-157,161-166,224
+  s_6b5a2f54eee20a::t_1d60ba5ba50166 102,108-109,130
+test/com/biel/BielAPI/Utils/IconMenuTest.java
+  s_6b5a2f54eee20a::t_1d60ba5ba50166 49,51,162-186
+  s_6b5a2f54eee20a::t_5fcedf2ca8537a 1-48,50,52-161,187-232,236-295
+  s_6b5a2f54eee20a::t_b3f0a916ee9490 233-235
+docs/icon-menu-review.md
+  s_6b5a2f54eee20a::t_9c8fa028b541f6 1-46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "16ef8a0e8fbb75bbf15431b12696a5ae0a6de68f",
+  "prompts": {},
+  "sessions": {
+    "s_6b5a2f54eee20a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0817b-4c49-7a80-a6e4-989efc4606e5",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
