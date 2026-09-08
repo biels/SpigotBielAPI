@@ -1,0 +1,26 @@
+src/com/biel/BielAPI/events/EventDeliveries.java
+  s_6b5a2f54eee20a::t_4311541dfbfc01 1-12
+src/com/biel/BielAPI/events/EventBus.java
+  s_6b5a2f54eee20a::t_4311541dfbfc01 38,71
+src/com/biel/BielAPI/events/GeneralListener.java
+  s_6b5a2f54eee20a::t_4311541dfbfc01 34-35,37,40
+test/com/biel/BielAPI/events/EventDeliveriesTest.java
+  s_6b5a2f54eee20a::t_4311541dfbfc01 1-31,33-45
+  s_6b5a2f54eee20a::t_8ba0b16e1a468c 32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "beb5a2e99942894e2cc4b3bb022b417e54894da9",
+  "prompts": {},
+  "sessions": {
+    "s_6b5a2f54eee20a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0817b-4c49-7a80-a6e4-989efc4606e5",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
