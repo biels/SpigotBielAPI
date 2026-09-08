@@ -63,6 +63,10 @@ public class GeneralListener implements Listener {
 	public void onProjectileHitEvent(ProjectileHitEvent evt) {h(evt);}
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent evt) {h(evt);}
+	@EventHandler
+	public void onEntityMount(EntityMountEvent evt) {h(evt);}
+	@EventHandler
+	public void onEntityDismount(EntityDismountEvent evt) {h(evt);}
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent evt) {h(evt);}

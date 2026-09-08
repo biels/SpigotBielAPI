@@ -122,6 +122,14 @@ public class EventBus { //Bus d'esdeveniments del joc
 					onPlayerDamage(evt, (Player)entity);
 				}
 			}
+			if (event instanceof EntityMountEvent){
+				EntityMountEvent evt = (EntityMountEvent) event;
+				onEntityMount(evt, evt.getEntity(), evt.getMount());
+			}
+			if (event instanceof EntityDismountEvent){
+				EntityDismountEvent evt = (EntityDismountEvent) event;
+				onEntityDismount(evt, evt.getEntity(), evt.getDismounted());
+			}
 			if (event instanceof EntityDamageByEntityEvent){
 				EntityDamageByEntityEvent evt = (EntityDamageByEntityEvent)event;
 				Entity damaged =  evt.getEntity();
@@ -386,6 +394,12 @@ public class EventBus { //Bus d'esdeveniments del joc
 	protected void onEntityDamage(EntityDamageEvent evt, Entity e) {
 	}
 	protected void onPlayerDamage(EntityDamageEvent evt, Player p) {
+	}
+	/** An entity getting onto a vehicle: a player mounting a horse, a boat, a plugin's carrier. */
+	protected void onEntityMount(EntityMountEvent evt, Entity rider, Entity mount) {
+	}
+	/** An entity leaving its vehicle, by sneak, by death, by a teleport or by the plugin; cancellable only when the client asked for it. */
+	protected void onEntityDismount(EntityDismountEvent evt, Entity rider, Entity dismounted) {
 	}
 	protected void onEntityDamageByEntity(EntityDamageByEntityEvent evt, Entity damaged, Entity damager) {
 	}
