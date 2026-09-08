@@ -42,6 +42,8 @@
 				<version>3.14.0</version>
 				<configuration>
 					<release>${maven.compiler.release}</release>
+					<!-- Isolate compilation rounds: in-process Java 25 compilation fails on a clean test build. -->
+					<fork>true</fork>
 				</configuration>
 			</plugin>
 			<plugin>

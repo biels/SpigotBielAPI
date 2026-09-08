@@ -311,10 +311,6 @@ public class EventBus { //Bus d'esdeveniments del joc
 				PlayerToggleFlightEvent evt = (PlayerToggleFlightEvent)event;
 				onPlayerToggleFlight(evt, p);
 			}
-			if (event instanceof PlayerToggleFlightEvent){
-				PlayerToggleFlightEvent evt = (PlayerToggleFlightEvent)event;
-				onPlayerToggleFlight(evt, p);
-			}
 			if (event instanceof PlayerToggleSneakEvent){
 				PlayerToggleSneakEvent evt = (PlayerToggleSneakEvent)event;
 				onPlayerToggleSneak(evt, p);
