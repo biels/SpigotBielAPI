@@ -26,14 +26,7 @@ public class GeneralListener implements Listener {
 		plugin.getLogger().info("Listener (G) created!");
 
 	}
-	/**
-	 * The handlers below overlap: a PlayerDeathEvent is also an EntityDeathEvent, an
-	 * EntityDamageByEntityEvent also an EntityDamageEvent, and two handlers are declared
-	 * for the death itself, so one event used to reach the games two or three times (a
-	 * kill paid three times, three wither skeletons for one death, 2026-09-08). Bukkit
-	 * can dispatch nested events between those handlers, so remembering only the last
-	 * event allows the outer death to be delivered again after its rewards spawn mobs.
-	 */
+	/** Identity protection also covers explicit or reentrant calls outside Bukkit's registrations. */
 	private final EventDeliveries deliveries = new EventDeliveries();
 
 	public void h(Event evt) { //Handle
@@ -46,11 +39,7 @@ public class GeneralListener implements Listener {
 	@EventHandler
 	public void onPlayerMoveEvent(PlayerMoveEvent evt) {h(evt);}
 	@EventHandler
-	public void onPlayerDeathEvent(PlayerDeathEvent evt) {h(evt);}
-	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent evt) {h(evt);}
-	@EventHandler
-	public void onPlayerDropItemEvent(PlayerDropItemEvent evt) {h(evt);}
 
 	@EventHandler
 	public void onItemDespawnEvent(ItemDespawnEvent evt) {h(evt);}
@@ -60,8 +49,6 @@ public class GeneralListener implements Listener {
 	public void onProjectileLaunchEvent(ProjectileLaunchEvent evt) {h(evt);}
 	@EventHandler
 	public void onProjectileHitEvent(ProjectileHitEvent evt) {h(evt);}
-	@EventHandler
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent evt) {h(evt);}
 	@EventHandler
 	public void onEntityMount(EntityMountEvent evt) {h(evt);}
 	@EventHandler
@@ -109,8 +96,6 @@ public class GeneralListener implements Listener {
 	//		public void onBlockRedstone(BlockRedstoneEvent evt) {h(evt);}
 	//		@EventHandler
 	//		public void onBlockSpread(BlockSpreadEvent evt) {h(evt);}
-			@EventHandler
-			public void onEntityBlockForm(EntityBlockFormEvent evt) {h(evt);}
 	//		@EventHandler
 	//		public void onLeavesDecay(LeavesDecayEvent evt) {h(evt);}
 	//		@EventHandler
@@ -123,18 +108,10 @@ public class GeneralListener implements Listener {
 	public void onPrepareItemEnchant(PrepareItemEnchantEvent evt) {h(evt);}
 	@EventHandler
 	public void onCreatureSpawn(CreatureSpawnEvent evt) {h(evt);}
-	@EventHandler
-	public void onEntityBreakDoor(EntityBreakDoorEvent evt) {h(evt);}
 			@EventHandler
 			public void onEntityChangeBlock(EntityChangeBlockEvent evt) {h(evt);} //New
 	@EventHandler
-	public void onEntityCombustByBlock(EntityCombustByBlockEvent evt) {h(evt);}
-	@EventHandler
-	public void onEntityCombustByEntity(EntityCombustByEntityEvent evt) {h(evt);}
-	@EventHandler
 	public void onEntityCombust(EntityCombustEvent evt) {h(evt);}
-	@EventHandler
-	public void onEntityDamageByBlock(EntityDamageByBlockEvent evt) {h(evt);}
 //new-----------
 			@EventHandler
 			public void onEntityInteract(EntityInteractEvent evt) {h(evt);}
@@ -151,19 +128,13 @@ public class GeneralListener implements Listener {
 			@EventHandler
 			public void onEntityTarget(EntityTargetEvent evt) {h(evt);}
 			@EventHandler
-			public void onEntityTargetLivingEntity(EntityTargetLivingEntityEvent evt) {h(evt);}
-			@EventHandler
 			public void onEntityTeleport(EntityTeleportEvent evt) {h(evt);}
 			@EventHandler
 			public void onExpBottle(ExpBottleEvent evt) {h(evt);}
 			@EventHandler
 			public void onFoodLevelChange(FoodLevelChangeEvent evt) {h(evt);}
 			@EventHandler
-			public void onItemDespawn(ItemDespawnEvent evt) {h(evt);}
-			@EventHandler
 			public void onPigZap(PigZapEvent evt) {h(evt);}
-			@EventHandler
-			public void onPlayerDeath(PlayerDeathEvent evt) {h(evt);}
 			@EventHandler
 			public void onPotionSplash(PotionSplashEvent evt) {h(evt);}
 			@EventHandler
@@ -174,8 +145,6 @@ public class GeneralListener implements Listener {
 			public void onSlimeSplit(SlimeSplitEvent evt) {h(evt);}
 			//created
 			
-			@EventHandler
-			public void onEntityBreakDoorEvent(EntityBreakDoorEvent evt) {h(evt);}
 			@EventHandler
 			public void onEntityUnleashEvent(EntityUnleashEvent evt) {h(evt);}
 			//

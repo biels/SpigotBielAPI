@@ -29,7 +29,6 @@ import org.bukkit.event.world.WorldEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.util.BlockIterator;
 
 import com.biel.BielAPI.Com;
 import com.biel.BielAPI.Utils.GUtils;
@@ -52,6 +51,9 @@ public class EventBus { //Bus d'esdeveniments del joc
 		Com.getPlugin().evtgest.registerEventBus(this);
 		registered = true;
 	}
+	final void registrationRemoved() {
+		registered = false;
+	}
 	public void destroyEventBus(){
 		destroyed = true;
 	}
@@ -67,7 +69,7 @@ public class EventBus { //Bus d'esdeveniments del joc
 		return MessageFormat.format("{0}[Destroyed={1}, Valid={2}]", super.toString(), isDestroyed(), isValid());
 	}
 	public synchronized void recieveEvent(Event evt) {
-		if(!isValid())return;
+		if(isDestroyed() || !isValid())return;
 		if(!deliveries.first(evt))return;
 		if (verifyEvent(evt)){gameEvent(evt);}
 	}
@@ -76,6 +78,10 @@ public class EventBus { //Bus d'esdeveniments del joc
 		if (event instanceof BlockEvent){ 
 			Block blk = ((BlockEvent)event).getBlock();
 			Location loc = blk.getLocation();
+			if (event instanceof BlockFormEvent evt) {
+				onBlockForm(evt, blk);
+				if (evt instanceof EntityBlockFormEvent formed) onEntityBlockForm(formed, formed.getEntity());
+			}
 			if (event instanceof BlockBreakEvent){
 				BlockBreakEvent evt = (BlockBreakEvent)event;
 				onBlockBreak(evt, blk);    	
@@ -163,27 +169,9 @@ public class EventBus { //Bus d'esdeveniments del joc
 				Projectile proj = evt.getEntity();
 				ProjectileSource shooter = proj.getShooter();
 				onProjectileHit(evt, proj);
-				//Block Hit
-				World world = entity.getWorld();
-
-				if((shooter instanceof Player)){
-					Player player = (Player)shooter;
-					BlockIterator iterator = new BlockIterator(world, proj.getLocation().toVector(), proj.getVelocity().normalize(), 0, 4);
-					Block hitBlock = null;
-
-					while(iterator.hasNext()) {
-						hitBlock = iterator.next();
-						// hitBlock.breakNaturally();
-						if(GUtils.isValidSolidBlock(hitBlock)){ break;}
-					}
-					if (hitBlock != null) {
-						onBlockHitByProjectile(evt, hitBlock, proj);
-					}
-
+				if (shooter instanceof Player && evt.getHitBlock() != null) {
+					onBlockHitByProjectile(evt, evt.getHitBlock(), proj);
 				}
-
-			
-				//----
 			}
 			if (event instanceof EntityExplodeEvent){
 				EntityExplodeEvent evt = (EntityExplodeEvent)event;
@@ -207,10 +195,6 @@ public class EventBus { //Bus d'esdeveniments del joc
 			if (event instanceof EntityUnleashEvent){
 				EntityUnleashEvent evt = (EntityUnleashEvent)event;
 				onEntityUnleash(evt, entity, evt.getReason());
-			}
-			if (event instanceof EntityBlockFormEvent){
-				EntityBlockFormEvent evt = (EntityBlockFormEvent)event;
-				onEntityBlockForm(evt, entity);
 			}
 			if (event instanceof EntityChangeBlockEvent){
 				EntityChangeBlockEvent evt = (EntityChangeBlockEvent)event;
@@ -480,7 +464,7 @@ public class EventBus { //Bus d'esdeveniments del joc
 				// A player can leave this bus's world (and the temporary world can be
 				// unloaded) during the one-tick respawn delay. Revalidate both the bus
 				// and the event immediately before invoking game-specific callbacks.
-				if(player.isOnline() && isValid() && verifyEvent(fEvt)){
+				if(player.isOnline() && !isDestroyed() && isValid() && verifyEvent(fEvt)){
 					onPlayerRespawnAfterTick(fEvt, player);
 				}
 			}

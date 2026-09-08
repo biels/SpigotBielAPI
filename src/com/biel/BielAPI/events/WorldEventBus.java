@@ -5,17 +5,13 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.World.Spigot;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.inventory.InventoryEvent;
-import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.world.WorldEvent;
-import org.bukkit.inventory.InventoryHolder;
 
 import com.biel.BielAPI.Com;
 
@@ -56,8 +52,7 @@ public class WorldEventBus extends EventBus {
 	}
 	@Override
 	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return getWorld() != null;
+		return !isDestroyed() && getWorld() != null;
 	}
 	@Override
 	protected Boolean verifyEvent(Event evt) {
@@ -80,10 +75,7 @@ public class WorldEventBus extends EventBus {
 		}
 		if (evt instanceof InventoryEvent){
 			InventoryEvent e = (InventoryEvent)evt;
-			InventoryHolder holder = e.getInventory().getHolder();
-			if (holder instanceof Entity) {
-				return ((Entity) holder).getWorld() == getWorld();
-			}
+			return e.getView().getPlayer().getWorld() == getWorld();
 		}
 		Com.getPlugin().getLogger().fine(MessageFormat.format("Event no verificat: {0} @ WorldEventBus", evt.getEventName()));
 		return true;
