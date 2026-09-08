@@ -2,19 +2,16 @@ package com.biel.BielAPI.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.IdentityHashMap;
-import java.util.Set;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -33,17 +30,25 @@ public class IconMenu extends EventBus{
 
 	private String[] optionNames;
 	private ItemStack[] optionIcons;
-	private final Set<Inventory> openedInventories = Collections.newSetFromMap(new IdentityHashMap<Inventory, Boolean>());
+	private final Map<Inventory, MenuSession> openedInventories = new IdentityHashMap<>();
+
+	private static final class MenuSession {
+		final Player player;
+		boolean actionPending;
+		MenuSession(Player player) { this.player = player; }
+	}
+
+	@Override
+	protected boolean shouldRegisterImmediately() { return false; }
 
 	public IconMenu(String name, int size, OptionClickEventHandler handler) {
-		//super(p);
-		this.name = name + ChatColor.GRAY + GUtils.NombreEntre(0, 1000);
+		if (size < 9 || size > 54 || size % 9 != 0) throw new IllegalArgumentException("Menu size must be 9 to 54, in rows of nine");
+		this.name = name;
 		this.size = size;
 		this.handler = handler;
 		this.plugin = Com.getPlugin();
 		this.optionNames = new String[size];
 		this.optionIcons = new ItemStack[size];
-		//plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
 	public IconMenu setOption(int position, ItemStack icon, String name, String... info) {
@@ -59,69 +64,106 @@ public class IconMenu extends EventBus{
 	}
 
 	public void open(Player player) {
+		if (isDestroyed()) throw new IllegalStateException("Cannot reopen a destroyed menu");
 		Inventory inventory = Bukkit.createInventory(player, size, name);
 		for (int i = 0; i < optionIcons.length; i++) {
 			if (optionIcons[i] != null) {
-				inventory.setItem(i, optionIcons[i]);
+				inventory.setItem(i, optionIcons[i].clone());
 			}
 		}
-		openedInventories.add(inventory);
-		player.openInventory(inventory);
+		openedInventories.put(inventory, new MenuSession(player));
+		registerEventBus();
+		try {
+			player.openInventory(inventory);
+		} finally {
+			// A cancelled open must not leave a registered menu without a viewer.
+			if (!isViewing(player, inventory)) {
+				openedInventories.remove(inventory);
+				if (openedInventories.isEmpty()) destroy();
+			}
+		}
 	}
 
 	public void destroy() {
-		//Bukkit.broadcastMessage("Destroyed: " + name);
+		if (isDestroyed()) return;
 		destroyEventBus();
 		handler = null;
 		plugin = null;
 		optionNames = null;
 		optionIcons = null;
+		Map<Inventory, MenuSession> closing = new IdentityHashMap<>(openedInventories);
 		openedInventories.clear();
+		for (var entry : closing.entrySet()) {
+			Player player = entry.getValue().player;
+			if (isViewing(player, entry.getKey())) player.closeInventory();
+		}
 	}
 	public boolean isThisOne(Inventory inventory, InventoryHolder h) {
-		return openedInventories.contains(inventory);
+		return openedInventories.containsKey(inventory);
 	}
 	@Override
 	protected void onInventoryClose(InventoryCloseEvent evt, Inventory inv) {
-		// TODO Auto-generated method stub
 		super.onInventoryClose(evt, inv);
 		Inventory inventory = evt.getInventory();
-		if (isThisOne(inventory, evt.getPlayer())) {
+		MenuSession session = openedInventories.get(inventory);
+		if (session != null && session.player.equals(evt.getPlayer())) {
 			openedInventories.remove(inventory);
-			destroy();
-			//TODO GET THIS OUT https://hub.spigotmc.org/jira/browse/SPIGOT-943
+			if (openedInventories.isEmpty()) destroy();
 		}
 	}
 	@Override
 	protected void onInventoryClick(InventoryClickEvent evt, Inventory inv) {
-		// TODO Auto-generated method stub
 		super.onInventoryClick(evt, inv);
-		if (isThisOne(evt.getInventory(), evt.getWhoClicked())) {
-			evt.setCancelled(true);
-			int slot = evt.getRawSlot();
-			if (optionNames != null && slot >= 0 && slot < size && optionNames[slot] != null && plugin != null) {
-				final Player player = (Player) evt.getWhoClicked();
-				final String optionName = optionNames[slot];
-				// The option runs on the next tick, once the cancelled click has been
-				// answered. Some options do slow work on the main thread - creating a
-				// game instance copies a world folder and loads it - and while that ran
-				// inside the event the client kept showing the clicked item on the
-				// cursor, as if it had been picked up.
-				Bukkit.getScheduler().runTask(plugin, () -> dispatchOptionClick(player, slot, optionName));
-			}
+		Inventory inventory = evt.getInventory();
+		if (!isThisOne(inventory, evt.getWhoClicked())) return;
+		int slot = evt.getRawSlot();
+		if (slot < 0 || slot >= size) {
+			InventoryAction action = evt.getAction();
+			if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY || action == InventoryAction.COLLECT_TO_CURSOR
+					|| action == InventoryAction.UNKNOWN) evt.setCancelled(true);
+			return;
 		}
+		boolean alreadyCancelled = evt.isCancelled();
+		evt.setCancelled(true);
+		if (alreadyCancelled || (evt.getClick() != ClickType.LEFT && evt.getClick() != ClickType.RIGHT)) return;
+		MenuSession session = openedInventories.get(inventory);
+		if (!session.player.equals(evt.getWhoClicked()) || session.actionPending || optionNames[slot] == null || plugin == null) return;
+		session.actionPending = true;
+		String optionName = optionNames[slot];
+		// Answer the cancelled click before potentially expensive option work.
+		Bukkit.getScheduler().runTask(plugin, () -> dispatchOptionClick(inventory, session, slot, optionName));
 	}
-	private void dispatchOptionClick(Player player, int slot, String optionName) {
+
+	@Override
+	protected void onInventoryDrag(InventoryDragEvent evt, Inventory inv) {
+		if (isThisOne(evt.getInventory(), evt.getWhoClicked())
+				&& evt.getRawSlots().stream().anyMatch(slot -> slot >= 0 && slot < size)) evt.setCancelled(true);
+	}
+
+	private static boolean isViewing(Player player, Inventory inventory) {
+		return player.isOnline() && player.getOpenInventory().getTopInventory() == inventory;
+	}
+
+	private void dispatchOptionClick(Inventory inventory, MenuSession session, int slot, String optionName) {
+		Player player = session.player;
 		OptionClickEventHandler handler = this.handler;
 		Plugin plugin = this.plugin;
-		if (handler == null || plugin == null) return; // destroyed between the click and this tick
+		if (handler == null || plugin == null || openedInventories.get(inventory) != session || !isViewing(player, inventory)) return;
 		OptionClickEvent e = new OptionClickEvent(player, slot, optionName, this);
-		handler.onOptionClick(e);
-		if (e.willClose()) {
-			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, player::closeInventory, 1);
+		try {
+			handler.onOptionClick(e);
+		} catch (RuntimeException | Error exception) {
+			session.actionPending = false;
+			throw exception;
 		}
 		if (e.willDestroy()) {
 			destroy();
+		} else if (e.willClose()) {
+			Bukkit.getScheduler().runTask(plugin, () -> {
+				if (openedInventories.get(inventory) == session && isViewing(player, inventory)) player.closeInventory();
+			});
+		} else {
+			session.actionPending = false;
 		}
 	}
 
@@ -179,6 +221,7 @@ public class IconMenu extends EventBus{
 	}
 
 	private static ItemStack setItemNameAndLore(ItemStack item, String name, String[] lore) {
+		item = item.clone();
 		ItemMeta im = item.getItemMeta();
 		im.setDisplayName(name);
 		im.setLore(Arrays.asList(lore));
