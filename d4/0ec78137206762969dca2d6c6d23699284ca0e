@@ -1,0 +1,22 @@
+test/com/biel/BielAPI/events/EventRoutingTest.java
+  s_ba0431a86c7e22::t_fa81471cdd4295 26,70-85
+  s_ba0431a86c7e22::t_8c37b2b225d41c 86-87
+pom.xml
+  s_ba0431a86c7e22::t_cb812204a697c1 45-46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "d40ec78137206762969dca2d6c6d23699284ca0e",
+  "prompts": {},
+  "sessions": {
+    "s_ba0431a86c7e22": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0820e-0cd6-7cf0-a5ce-d84b0e97af45",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
