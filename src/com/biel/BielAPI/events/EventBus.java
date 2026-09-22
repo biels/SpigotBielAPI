@@ -246,6 +246,10 @@ public class EventBus { //Bus d'esdeveniments del joc
 				onPlayerInteract(evt, evt.getPlayer());
 
 			}
+			if (event instanceof PlayerItemConsumeEvent){
+				PlayerItemConsumeEvent evt = (PlayerItemConsumeEvent)event;
+				onPlayerItemConsume(evt, p);
+			}
 			
 			if (event instanceof PlayerInteractEntityEvent){
 				PlayerInteractEntityEvent evt = (PlayerInteractEntityEvent)event;
@@ -430,6 +434,8 @@ public class EventBus { //Bus d'esdeveniments del joc
 	protected void onExplosionPrime(ExplosionPrimeEvent evt) {
 	}
 	protected void onPlayerInteract(PlayerInteractEvent evt, Player p) {
+	}
+	protected void onPlayerItemConsume(PlayerItemConsumeEvent evt, Player p) {
 	}
 	protected void onPlayerInteractEntity(PlayerInteractEntityEvent evt, Player p) {
 	}

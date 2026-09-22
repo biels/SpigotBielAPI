@@ -23,7 +23,9 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.event.inventory.InventoryEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.junit.jupiter.api.Test;
@@ -83,6 +85,22 @@ class EventRoutingTest {
         assertSame(player, bus.receivedPlayer);
         bus.recieveEvent(new PlayerToggleFlightEvent(player, false));
         assertEquals(2, bus.flightToggles);
+    }
+
+    @Test void itemConsumptionReachesThePlayerHookOnce() {
+        var bus = new EventBus() {
+            int consumptions;
+            Player receivedPlayer;
+            @Override protected boolean shouldRegisterImmediately() { return false; }
+            @Override protected void onPlayerItemConsume(PlayerItemConsumeEvent event, Player player) {
+                consumptions++;
+                receivedPlayer = player;
+            }
+        };
+        Player player = stub(Player.class, Map.of());
+        bus.recieveEvent(new PlayerItemConsumeEvent(player, null, EquipmentSlot.HAND));
+        assertEquals(1, bus.consumptions);
+        assertSame(player, bus.receivedPlayer);
     }
 
     @Test void unregisterDuringDispatchSkipsTheRemainingSnapshotEntry() {

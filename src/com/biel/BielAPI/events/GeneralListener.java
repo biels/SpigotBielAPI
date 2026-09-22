@@ -40,6 +40,8 @@ public class GeneralListener implements Listener {
 	public void onPlayerMoveEvent(PlayerMoveEvent evt) {h(evt);}
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent evt) {h(evt);}
+	@EventHandler
+	public void onPlayerItemConsume(PlayerItemConsumeEvent evt) {h(evt);}
 
 	@EventHandler
 	public void onItemDespawnEvent(ItemDespawnEvent evt) {h(evt);}
