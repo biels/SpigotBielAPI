@@ -1,0 +1,26 @@
+src/com/biel/BielAPI/events/GeneralListener.java
+  s_490bdcb8eae95a::t_20eb80a0e81a83 43-44
+src/com/biel/BielAPI/events/EventBus.java
+  s_490bdcb8eae95a::t_20eb80a0e81a83 249-252,438
+  s_490bdcb8eae95a::t_e711ba7fcafe91 439
+test/com/biel/BielAPI/events/EventRoutingTest.java
+  s_490bdcb8eae95a::t_20eb80a0e81a83 26,28,90-100,102-103
+  s_490bdcb8eae95a::t_28f5a8cc4ac55f 101
+  s_490bdcb8eae95a::t_77a291fb352016 104-105
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "c145cba67797a6a4b42f700d3337a605c1bc4a21",
+  "prompts": {},
+  "sessions": {
+    "s_490bdcb8eae95a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c93b-d7a5-78f0-9d9f-11fbc084f997",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
