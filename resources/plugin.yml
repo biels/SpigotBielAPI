@@ -1,7 +1,7 @@
 name: BielAPI
 main: com.biel.BielAPI.BielAPI
 version: '${project.version}'
-api-version: '26.2'
+api-version: '26.3'
 commands:
   BielAPI:
     description: API version
