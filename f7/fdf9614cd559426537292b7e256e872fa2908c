@@ -1,0 +1,21 @@
+pom.xml
+  s_d5413f0bf0564b::t_ba41738e3a5f1a 13
+resources/plugin.yml
+  s_d5413f0bf0564b::t_ba41738e3a5f1a 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f7fdf9614cd559426537292b7e256e872fa2908c",
+  "prompts": {},
+  "sessions": {
+    "s_d5413f0bf0564b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a145e3-419c-7d90-a9b2-43a3fbcdd113",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Biel Simon Rojas <bielsimon2@gmail.com>"
+    }
+  }
+}
